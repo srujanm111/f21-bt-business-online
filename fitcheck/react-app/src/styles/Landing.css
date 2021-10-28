@@ -1,0 +1,26 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #131417;
+    flex-direction: column;
+}
+.title {
+    font-size: 5.5rem;
+    font-weight: 300;
+}
+.homepageOptions {
+    display: flex;
+    padding: 6px;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+}
+a {
+    margin-top: 9px;
+}
+.h100 {
+    height: 100vh;
+}
+.f100 {
+    font-size: 2.25rem;
+}

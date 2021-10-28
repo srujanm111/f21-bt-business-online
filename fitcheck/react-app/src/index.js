@@ -1,8 +1,30 @@
+/* FITCHECK
+* WEB FRONTEND
+* CVGT F21-BT-BUSINESS-ONLINE
+*/
+
+// index page root
+
+import './common';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
+
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
 
 ReactDOM.render(
   <React.StrictMode>
@@ -11,7 +33,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// report web vitals to console
+if (global.config.report_web_vitals)
+  reportWebVitals(console.log);

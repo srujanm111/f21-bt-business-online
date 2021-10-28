@@ -1,0 +1,11 @@
+.loginTitle {
+    font-size: 4.5rem;
+    font-weight: 300;
+}
+.errorMessage {
+    font-size: 20px;
+    color: #c20c0c;
+    opacity: 0.8;
+    display: block;
+    margin-top: 18px;
+}
