@@ -8,8 +8,8 @@
 .env.production.local
 
 # backend
-fitcheck/express-api/node_modules
 fitcheck/express-api/*.DS_Store
+fitcheck/express-api/node_modules
 
 # web frontend
 fitcheck/react-app/node_modules
