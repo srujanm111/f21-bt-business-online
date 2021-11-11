@@ -1,13 +1,24 @@
 {
-    "name": "flutter_chrome_extension",
-    "description": "flutter_chrome_extension",
+    "name": "FitCheck",
+    "description": "Chrome extension for FitCheck.",
     "version": "1.0.0",
     "content_security_policy": {
         "extension_pages": "script-src 'self' ; object-src 'self'"
     },
+    "background": {
+        "service_worker": "context_menu.js"
+    },
     "action": {
         "default_popup": "index.html",
         "default_icon": "/icons/Icon-192.png"
+    },
+    "permissions": [
+        "contextMenus"
+    ],
+    "icons": {
+        "16": "/icons/shirt/icon-bitty.png",
+        "48": "/icons/shirt/icon-small.png",
+        "128": "/icons/shirt/icon-large.png"
     },
     "manifest_version": 3
 }

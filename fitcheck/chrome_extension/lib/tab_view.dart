@@ -1,6 +1,6 @@
 import 'package:chrome_extension/constants.dart';
+import 'package:chrome_extension/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class TabItem {
   final String name;
@@ -12,7 +12,7 @@ class TabItem {
 class CustomTabBar extends StatefulWidget implements PreferredSizeWidget {
   final List<TabItem> tabs;
 
-  CustomTabBar({Key? key, required this.tabs}) : super(key: key);
+  const CustomTabBar({Key? key, required this.tabs}) : super(key: key);
 
   @override
   _CustomTabBarState createState() => _CustomTabBarState();
@@ -45,19 +45,13 @@ class _CustomTabBarState extends State<CustomTabBar> {
           decoration: BoxDecoration(
             border: Border.all(
               color: border,
-              width: 1.5,
+              width: 2,
             ),
           ),
           child: Center(
-            child: Text(
-              item.name,
-              style: GoogleFonts.raleway(
-                textStyle: TextStyle(
-                  color: index == widget.tabs.indexOf(item) ? pink : gray,
-                  fontSize: 23,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
+            child: CustomText(
+              text: item.name,
+              color: index == widget.tabs.indexOf(item) ? pink : gray,
             ),
           ),
         ),
@@ -67,15 +61,29 @@ class _CustomTabBarState extends State<CustomTabBar> {
 }
 
 class CustomTabBarView extends StatefulWidget {
-  const CustomTabBarView({Key? key}) : super(key: key);
+  final List<Widget> pages;
+
+  const CustomTabBarView({Key? key, required this.pages}) : super(key: key);
 
   @override
-  _CustomTabBarViewState createState() => _CustomTabBarViewState();
+  CustomTabBarViewState createState() => CustomTabBarViewState();
 }
 
-class _CustomTabBarViewState extends State<CustomTabBarView> {
+class CustomTabBarViewState extends State<CustomTabBarView> {
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(child: child, opacity: animation);
+      },
+      child: widget.pages[index],
+    );
+  }
+
+  void changePage(int index) {
+    setState(() => this.index = index);
   }
 }
