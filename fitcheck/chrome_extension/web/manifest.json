@@ -13,7 +13,9 @@
         "default_icon": "/icons/Icon-192.png"
     },
     "permissions": [
-        "contextMenus"
+        "contextMenus",
+        "notifications",
+        "storage"
     ],
     "icons": {
         "16": "/icons/shirt/icon-bitty.png",

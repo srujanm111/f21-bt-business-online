@@ -1,6 +1,9 @@
 import 'package:chrome_extension/constants.dart';
 import 'package:chrome_extension/tab_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import 'main.dart';
 
 class Startup extends StatelessWidget {
   final GlobalKey<CustomTabBarViewState> tabViewKey =
@@ -28,13 +31,24 @@ class Startup extends StatelessWidget {
   }
 }
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
   @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: pink,
+    return GestureDetector(
+      onTap: () => setState(() {}),
+      child: Container(
+        color: green,
+        child: Center(
+          child: url != null ? Image.network(url!) : Text(url ?? "no url"),
+        ),
+      ),
     );
   }
 }
@@ -46,6 +60,9 @@ class LogIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: green,
+      child: Center(
+        child: url != null ? Image.network(url!) : Text(url ?? "no url"),
+      ),
     );
   }
 }
