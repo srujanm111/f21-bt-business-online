@@ -21,6 +21,7 @@ import './App.css';
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Landing from "./components/Landing";
+import MyFits from "./components/MyFits";
 
 function App() {
   return (
@@ -30,11 +31,15 @@ function App() {
           <Route path="/login">
             <Login></Login>
           </Route>
-          <Route path="/register">
-            <Register></Register>
+          <Route path="/Register">
+          <Register></Register>
           </Route>
           <Route path="/">
-            <Landing></Landing>
+          <MyFits></MyFits>
+           {/* <Landing></Landing> */}
+          </Route>
+          <Route path="/MyFits">
+            <MyFits></MyFits>
           </Route>
         </Switch>
       </Router >
