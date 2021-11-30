@@ -3,7 +3,7 @@
 ## Development & Testing Locally
 
 -   First navigate to this folder `fitcheck/react-app` in terminal
--   Install dependencies with `npm install` or `npm i`
+-   Install dependencies with `npm install` or `npm i, npm install react-router-dom, and npm install --save styled-components
 -   Start the app with `npm start`
     -   This will start the react development server
 -   Build the app into static files for production mode with `npm run build`
