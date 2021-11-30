@@ -1,0 +1,29 @@
+.font {
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+
+    letter-spacing: 0.02em;
+    
+    color: #000000;
+}
+
+.logo{
+    position: absolute;
+    width: 273.31px;
+    height: 68.98px;
+    left: 51px;
+    bottom: 635px;
+}
+
+.pfp{
+    position: absolute;
+    width: 63px;
+    height: 63px;
+    left: 1326px;
+    top: 15px;
+}
+
+

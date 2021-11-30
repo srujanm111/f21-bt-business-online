@@ -13,6 +13,7 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Landing.css';
 
@@ -43,13 +44,10 @@ class Landing extends React.Component {
     render() {
         return (
             <div className="center h100">
-        
                 <Container>
                     <Row>
                         <Col>
-                            <div className="centerTitle">
-                                <h1 className="title titleFont"> FitCheck </h1>
-                            </div>
+                         
                         </Col>
                     </Row>
                     <div className="homepageOptions">

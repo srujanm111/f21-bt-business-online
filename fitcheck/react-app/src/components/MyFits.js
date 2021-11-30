@@ -1,7 +1,6 @@
 
 import '../common';
 import React from 'react';
-import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import bottomNav from '../assets/bottomNav.svg';
 import outfit1  from '../assets/outfit1.svg';
@@ -32,25 +31,25 @@ class MyFits extends React.Component{
         return (
 
 // inside your render or return
-<div className>
+        <div className>
 
-    <div className = "fit1">
-        <img src={outfit1} alt = "" />
-    </div>
-    <div className = "fit2">
-        <img src={outfit2} alt = "" />
-    </div>
-    <div className = "fit3">
-        <img src={outfit3} alt = "" />
-    </div>
-    <div className = "fit4">
-        <img src={outfit4} alt = "" />
-    </div>
-    <div className = "bottomNav">
-        <img src={bottomNav} alt = "" />
-    </div>
+            <div className = "fit1">
+                <img src={outfit1} alt = "" />
+            </div>
+            <div className = "fit2">
+                <img src={outfit2} alt = "" />
+            </div>
+            <div className = "fit3">
+                <img src={outfit3} alt = "" />
+            </div>
+            <div className = "fit4">
+                <img src={outfit4} alt = "" />
+            </div>
+            <div className = "bottomNav">
+                <img src={bottomNav} alt = "" />
+            </div>
 
-</div>
+        </div>
 
 
      
