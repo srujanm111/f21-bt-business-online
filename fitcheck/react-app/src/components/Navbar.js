@@ -4,8 +4,6 @@ import React from 'react';
 import { withRouter } from "react-router-dom";
 import '../styles/Navbar.css';
 import logo from '../assets/logo.svg';
-import pfp from '../assets/pfp.svg';
-
 
 import {
     Nav,
@@ -13,7 +11,6 @@ import {
     NavMenu,
   } from './NavbarElements';
   
-
 
 class Navbar extends React.Component{
      render() {
@@ -28,16 +25,16 @@ class Navbar extends React.Component{
       
               <NavMenu>
              
-                <NavLink to= '/Landing' activeStyle>
+                <NavLink to= '/landing' activeStyle>
                   HOME
                 </NavLink>
-                <NavLink to='/Create' activeStyle>
+                <NavLink to='/login' activeStyle>
                   CREATE
                 </NavLink>
-                <NavLink to='/MyFits' activeStyle>
+                <NavLink to='/myfits' activeStyle>
                   MY FITS 
                 </NavLink>
-                <NavLink to='/Wardrobe' activeStyle>
+                <NavLink to='/register' activeStyle>
                   WARDROBE
                   <img className = "logo" src={logo} alt='logo' />
                 </NavLink>

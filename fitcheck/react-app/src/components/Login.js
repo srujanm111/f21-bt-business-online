@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
+
 import bottomNav from '../assets/bottomNav.svg';
 import '../styles/MyFits.css';
 
@@ -112,7 +113,7 @@ class Login extends React.Component {
             <div className="center h100">
                     <img className="bottomNav" src={bottomNav} />
                 <div className="centerTitle">
-                    <h1 className="loginTitle titleFont">Sign In</h1>
+                    <h1 className="loginTitle titleFont">Log In</h1>
                 </div>
                 
              

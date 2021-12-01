@@ -16,12 +16,9 @@ class MyFits extends React.Component{
         location: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired
     };
-
   
     componentDidMount() {
-        // global.api.authenticate((is_authenticated => {
-        //     if (is_authenticated) this.redirectPage();
-        // }).bind(this));
+
     }
     componentWillUnmount() {
 
@@ -30,7 +27,6 @@ class MyFits extends React.Component{
     render() {
         return (
 
-// inside your render or return
         <div className>
 
             <div className = "fit1">
@@ -51,14 +47,6 @@ class MyFits extends React.Component{
 
         </div>
 
-
-     
-        //    <img className="bottomNav" src={bottomNav}
-        //     className="fit1" src={outfit1}
-        //     className="fit2" src={outfit2} 
-        //     className="fit3" src={outfit3}
-        //     className="fit4" src={outfit4} />
-            
         );
     }
     

@@ -31,5 +31,86 @@ a {
     height: 100vh;
 }
 .f100 {
+    color : #000000;
     font-size: 2.25rem;
 }
+.text{
+    position: absolute;
+    width: 451px;
+    height: 53px;
+    left: 70px;
+    top: 143px;
+
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 45px;
+    line-height: 53px;
+    /* identical to box height */
+
+    letter-spacing: 0.02em;
+
+    color: #000000;
+
+}
+
+.box1{
+    position: absolute;
+    width: 452px;
+    height: 239px;
+    left: 70px;
+    top: 239px;
+}
+.box2{
+   
+    position: absolute;
+    width: 373px;
+    height: 239px;
+    left: 573px;
+top: 239px;
+
+}
+.box3{
+    position: absolute;
+    width: 373px;
+    height: 239px;
+    left: 997px;
+    top: 239px;    
+}
+.bottomBar{
+    position: absolute;
+    width: 1440px;
+    height: 100px;
+    left: 0px;
+    top: 685px;
+}
+
+.bottomText{
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 45px;
+    line-height: 53px;
+    text-align: right;
+    letter-spacing: 0.02em;
+
+    color: #000000;
+}
+
+.login{
+    position: absolute;
+    width: 309px;
+    height: 142px;
+    background: #C4C4C4;
+    border-radius: 30px;
+    left: 406px;
+    top: 500px;
+}
+.signup{
+    position: absolute;
+    width: 309px;
+    height: 142px;
+    left: 742px;
+    top: 500px;
+   
+}   
