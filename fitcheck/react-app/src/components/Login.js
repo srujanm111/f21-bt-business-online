@@ -13,6 +13,9 @@ import Button from '@material-ui/core/Button';
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
+import bottomNav from '../assets/bottomNav.svg';
+import '../styles/MyFits.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Login.css';
 
@@ -107,9 +110,12 @@ class Login extends React.Component {
     render() {
         return (
             <div className="center h100">
+                    <img className="bottomNav" src={bottomNav} />
                 <div className="centerTitle">
                     <h1 className="loginTitle titleFont">Sign In</h1>
                 </div>
+                
+             
                 <div className="defaultFormClass" style={{ marginTop: '7px' }}>
                     Username: <input type="text" id="username" placeholder="username" onChange={this.updateUsername.bind(this)} onKeyUp={this.checkEnter.bind(this)}></input><br />
                     Password: <input type="password" id="password" placeholder="********" onChange={this.updatePassword.bind(this)} onKeyUp={this.checkEnter.bind(this)}></input><br />
