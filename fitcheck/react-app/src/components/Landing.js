@@ -17,9 +17,9 @@ import { withRouter } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Landing.css';
 
-import main1  from '../assets/main1.svg';
-import main2 from '../assets/main2.svg';
-import main3 from '../assets/main3.svg';
+import createBox  from '../assets/createBox.svg';
+import recentBox from '../assets/recentBox.svg';
+import inspiredBox from '../assets/inspiredBox.svg';
 import bottomNav from '../assets/bottomNav.svg';
 import login from '../assets/login.svg';
 import signup from '../assets/signup.svg';
@@ -54,26 +54,25 @@ class Landing extends React.Component {
                     Check out these fits!
                 </h1>
             </div>
-            <div className = "box1">
-                <img src={main1} alt = "" />
+            <div className = "createBox">
+                <img src={createBox} alt = "" />
             </div>
-            <div className = "box2">
-                <img src={main2} alt = "" />
+            <div className = "recentBox">
+                <img src={recentBox} alt = "" />
             </div>
-            <div className = "box3">
-                <img src={main3} alt = "" />
+            <div className = "inspiredBox">
+                <img src={inspiredBox} alt = "" />
             </div>
 
             <div className = "login">
-            
             <NavLink to="/login"> <img src={login} alt = "" /> </NavLink>
             </div>
+
             <div className = "signup">
                 <NavLink to="/register"> 
                 <img src={signup} alt = "" />
                 </NavLink>
             </div>
-
 
             <div className = "bottomBar">
                 <img src={bottomNav} alt = "" />

@@ -37,14 +37,16 @@ function App() {
           <Navbar></Navbar>
           <Register></Register>
           </Route>
-          <Route path="/">
-          <Navbar></Navbar>
-           <Landing></Landing>
-          </Route>
           <Route path="/MyFits">
           <Navbar></Navbar>
             <MyFits></MyFits>
           </Route>
+          <Route path="/">
+          <Navbar></Navbar>
+         
+           <Landing></Landing>
+          </Route>
+       
        
         </Switch>
       </Router >

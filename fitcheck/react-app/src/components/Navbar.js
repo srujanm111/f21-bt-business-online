@@ -31,7 +31,7 @@ class Navbar extends React.Component{
                 <NavLink to='/login' activeStyle>
                   CREATE
                 </NavLink>
-                <NavLink to='/myfits' activeStyle>
+                <NavLink to='/MyFits' activeStyle>
                   MY FITS 
                 </NavLink>
                 <NavLink to='/register' activeStyle>
@@ -39,7 +39,6 @@ class Navbar extends React.Component{
                   <img className = "logo" src={logo} alt='logo' />
                 </NavLink>
            
-
               </NavMenu>
        
             </Nav>
