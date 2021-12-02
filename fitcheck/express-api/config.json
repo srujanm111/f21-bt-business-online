@@ -1,5 +1,9 @@
 {
     "http_port": 80,
     "mongo_port": 27017,
-    "mongo_db_id": "fitcheck"
+    "mongo_db_id": "fitcheck",
+    "jwt": {
+        "secret": "3ab0ca33aef6f5e88724e4671d2c2a6c96322778c355c6e2164138ccd9b17aaa",
+        "algo": "HS256"
+    }
 }

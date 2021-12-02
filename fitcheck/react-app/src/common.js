@@ -14,9 +14,9 @@ global.config = {
     landing_view: 'landing',
     auth_home_view: 'home',
     // control urls
-    api_url: `${window.location.protocol}//${window.location.host}`,
+    api_url: `${window.location.protocol}//${window.location.host}`,  // initial value
     landing_url: `${window.location.protocol}//${window.location.host}`,
-    auth_home_url: `${window.location.protocol}//${window.location.host}`,
+    auth_home_url: `${window.location.protocol}//${window.location.host}`,  // initial value
 };
 global.config.api_url = `${window.location.protocol}//${window.location.host}/${global.config.api_route}`;
 global.config.auth_home_url = `${window.location.protocol}//${window.location.host}/${global.config.auth_home_view}`;
