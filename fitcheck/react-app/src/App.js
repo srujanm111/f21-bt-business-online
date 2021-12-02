@@ -21,6 +21,8 @@ import './App.css';
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Landing from "./components/Landing";
+import MyFits from "./components/MyFits";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
@@ -28,14 +30,24 @@ function App() {
       <Router>
         <Switch>
           <Route path="/login">
+          <Navbar></Navbar>
             <Login></Login>
           </Route>
-          <Route path="/register">
-            <Register></Register>
+          <Route path="/Register">
+          <Navbar></Navbar>
+          <Register></Register>
+          </Route>
+          <Route path="/MyFits">
+          <Navbar></Navbar>
+            <MyFits></MyFits>
           </Route>
           <Route path="/">
-            <Landing></Landing>
+          <Navbar></Navbar>
+         
+           <Landing></Landing>
           </Route>
+       
+       
         </Switch>
       </Router >
     </div >
