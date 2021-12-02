@@ -180,12 +180,12 @@ function web_routing() {
             return web_return_error(req, res, 400, "Invalid password (too short)");
         // verify user exists
         db_user_exists(req.body.username, (result1, e1) => {
-            if (result1 === null) return web_return_error(req, res, 500, "Database error");  // `Database error: ${e1.message ? e1.message : e1.toString()}`
-            if (result1 == false) return web_return_error(req, res, 400, "User not found");
+            if (result1 === false) return web_return_error(req, res, 500, "Database error");  // `Database error: ${e1.message ? e1.message : e1.toString()}`
+            if (result1 === null) return web_return_error(req, res, 400, "User not found");
             // verify username+password
-            db_auth(req.body.username, req.body.password, (result2, e2) => {
-                if (result2 === null) return web_return_error(req, res, 500, "Database error");  //  `Database error: ${e2.message ? e2.message : e2.toString()}`
-                if (result2 == false) return web_return_error(req, res, 401, "Incorrect password");
+            db_authenticate(req.body.username, req.body.password, (result2, e2) => {
+                if (result2 === false) return web_return_error(req, res, 500, "Database error");  //  `Database error: ${e2.message ? e2.message : e2.toString()}`
+                if (result2 === null) return web_return_error(req, res, 401, "Incorrect password");
                 // issue new token
                 var token = web_issue_token(req.body.username);
                 return web_return_data(req, res, { token: token });
@@ -206,15 +206,15 @@ function web_routing() {
             return web_return_error(req, res, 400, "Invalid new password (too short)");
         // verify user does not already exist
         db_user_exists(req.body.new_username, (result1) => {
-            if (result1 === null) return web_return_error(req, res, 500, "Database error");
-            if (result1 != false) return web_return_error(req, res, 400, "Username already taken");
+            if (result1 === false) return web_return_error(req, res, 500, "Database error");
+            if (result1 != null) return web_return_error(req, res, 400, "Username already taken");
             // create user with username+password
             db_create_user(req.body.new_username, req.body.new_password, (result2) => {
-                if (result2 === null) return web_return_error(req, res, 500, "Database error");
-                if (result2 == false) return web_return_error(req, res, 500, "Failed to create user");
+                if (result2 === false) return web_return_error(req, res, 500, "Database error");
+                if (result2 === null) return web_return_error(req, res, 500, "Failed to create user");
                 // issue new token
                 var token = web_issue_token(req.body.new_username);
-                return return_data(req, res, { token: token });
+                return web_return_data(req, res, { token: token });
             });
         });
     });
@@ -222,10 +222,10 @@ function web_routing() {
     express_api.get("/api/auth", web_require_token() /* middleware decodes JWT */, (req, res) => {
         // verify decoded user exists
         db_user_exists(req.user.username, (result1) => {
-            if (result1 === null) return web_return_error(req, res, 500, "Database error");
-            if (result1 == false) return web_return_error(req, res, 400, "User not found");
+            if (result1 === false) return web_return_error(req, res, 500, "Database error");
+            if (result1 === null) return web_return_error(req, res, 400, "User not found");
             // authenticate user
-            return return_data(req, res, { username: req.user.username });
+            return web_return_data(req, res, { username: req.user.username });
         });
     });
 

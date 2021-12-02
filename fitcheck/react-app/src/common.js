@@ -32,9 +32,9 @@ global.api = {
         if (!token || token.trim().length <= 0)
             return resolve({ success: false, message: null });
         axios.get(`${global.config.api_url}/auth`, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: global.util.generate_auth_headers(token)
         }).then(response => {
-            if (!response || !response.hasOwnProperty('username')) {
+            if (!response || !response.data || !response.data.hasOwnProperty('username')) {
                 console.error(response);
                 return resolve({ success: false, message: null });
             }
@@ -55,7 +55,13 @@ global.api = {
     // sign out with token (delete token cookie and redirect to landing view)
     logout: (redirect = true) => {
         global.util.delete_cookie('token');
-        if (redirect) window.location = `${global.config.landing_url}/`;
+        console.log(global.util.cookie('token'));
+        if (redirect) {
+            setTimeout(_ => {
+                global.util.delete_cookie('token');
+                window.location = `${global.config.landing_url}/`;
+            }, 400);
+        }
     },
     // sign in with token (set token cookie and redirect to home view)
     login: (accessToken, redirect = true) => {
@@ -83,7 +89,7 @@ global.util = {
         else {
             if (date == '__indefinite__')
                 date = 'Fri, 31 Dec 9999 23:59:59 GMT';
-            document.cookie = id + '=' + val +
+            document.cookie = id + '=' + val + (";path=/;") +
                 ((date != undefined && date !== null) ? '; expires=' + date : '');
         }
         return (val == undefined || val === null) ? null : val;
@@ -138,5 +144,15 @@ global.util = {
         }
         return true;
     },
+    // generate authentication headers from token
+    generate_auth_headers: (token) => {
+        return { Authorization: `Bearer ${token}` };
+    },
+    append_period: message => {
+        message = `${message}`;
+        if (message[message.length - 1] != '.')
+            message = `${message}.`;
+        return message;
+    }
 };
 

@@ -37,9 +37,9 @@ class Login extends React.Component {
     }
 
     componentDidMount() {
-        // global.api.authenticate((is_authenticated => {
-        //     if (is_authenticated) this.redirectPage();
-        // }).bind(this));
+        global.api.authenticate((result => {
+            if (result.success) this.redirectPage();
+        }).bind(this));
     }
     componentWillUnmount() {
 
@@ -88,11 +88,12 @@ class Login extends React.Component {
 
     requestSignIn(username, password) {
         const unknown_error_msg = "Login server error.";
-        axios.post(`${global.config.api_url}/login`, {
+        axios.post(`${global.config.api_url}/sign_in`, {
             username: `${username}`,
             password: `${password}`
         }).then(response => {
-            if (response && response.hasOwnProperty('token')) {
+            if (response && response.data && response.data.hasOwnProperty('token')) {
+                this.setState({ errorMsg: "" });
                 global.api.login(response.data.token);
                 // global.api.login(response.data.token, false);
                 // this.redirectPage();
@@ -102,21 +103,21 @@ class Login extends React.Component {
             }
         }).catch(error => {
             console.error(error);
-            if (error && error.response && error.response.hasOwnProperty('message'))
-                this.setState({ errorMsg: error.response.message });
-            else this.setState({ errorMsg: unknown_error_msg });
+            if (error && error.response && error.response.data && error.response.data.hasOwnProperty('message')) {
+                this.setState({ errorMsg: global.util.append_period(error.response.data.message) });
+            } else this.setState({ errorMsg: unknown_error_msg });
         });
     }
 
     render() {
         return (
             <div className="center h100">
-                    <img className="bottomNav" src={bottomNav} />
+                <img className="bottomNav" src={bottomNav} />
                 <div className="centerTitle">
                     <h1 className="loginTitle titleFont">Log In</h1>
                 </div>
-                
-             
+
+
                 <div className="defaultFormClass" style={{ marginTop: '7px' }}>
                     Username: <input type="text" id="username" placeholder="username" onChange={this.updateUsername.bind(this)} onKeyUp={this.checkEnter.bind(this)}></input><br />
                     Password: <input type="password" id="password" placeholder="********" onChange={this.updatePassword.bind(this)} onKeyUp={this.checkEnter.bind(this)}></input><br />

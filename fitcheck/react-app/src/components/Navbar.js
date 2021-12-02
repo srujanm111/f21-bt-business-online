@@ -9,43 +9,33 @@ import {
     Nav,
     NavLink,
     NavMenu,
-  } from './NavbarElements';
-  
+} from './NavbarElements';
 
-class Navbar extends React.Component{
-     render() {
+
+class Navbar extends React.Component {
+    render() {
         return (
-         
-          <>
             <Nav>
-
-            <NavLink to='/' activeStyle>
-              <img className = "logo" src={logo} alt='logo' />
-            </NavLink>
-      
-              <NavMenu>
-             
-                <NavLink to= '/landing' activeStyle>
-                  HOME
+                <NavLink to='/'>
+                    <img className="logo" src={logo} alt='logo' />
                 </NavLink>
-                <NavLink to='/login' activeStyle>
-                  CREATE
-                </NavLink>
-                <NavLink to='/MyFits' activeStyle>
-                  MY FITS 
-                </NavLink>
-                <NavLink to='/register' activeStyle>
-                  WARDROBE
-                  <img className = "logo" src={logo} alt='logo' />
-                </NavLink>
-           
-              </NavMenu>
-       
+                <NavMenu>
+                    <NavLink to='/landing'>
+                        HOME
+                    </NavLink>
+                    <NavLink to='/login'>
+                        CREATE
+                    </NavLink>
+                    <NavLink to='/MyFits'>
+                        MY FITS
+                    </NavLink>
+                    <NavLink to='/register'>
+                        WARDROBE
+                        <img className="logo" src={logo} alt='logo' />
+                    </NavLink>
+                </NavMenu>
             </Nav>
-         
-          </>
         );
-      };
-      
+    };
 }
 export default withRouter(Navbar);
