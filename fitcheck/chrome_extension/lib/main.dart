@@ -1,16 +1,14 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
+import 'package:chrome_extension/constants.dart';
 import 'package:chrome_extension/startup.dart';
 import 'package:flutter/material.dart';
 
+// IMPORTANT
+// Run this command to build chrome extension for release
+// flutter build web --web-renderer html --csp
 
-String? url;
+const chrome_debug = false;
 
 void main() {
-  final channel = BroadcastChannel('images');
-  channel.onMessage.listen((event) {
-    url = event.data.payload;
-  });
   runApp(App());
 }
 
@@ -23,7 +21,35 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Startup(),
+      home: _debugWrap(Startup()),
     );
   }
+}
+
+Widget _debugWrap(Widget child) {
+  return chrome_debug ? Stack(
+    children: [
+      Center(
+        child: Container(
+          height: 600,
+          width: 360,
+          decoration: BoxDecoration(
+            border: Border.all(color: black),
+          ),
+          child: child,
+        ),
+      )
+    ],
+  ) : child;
+}
+
+void pushReplace(Widget page, BuildContext context) {
+  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, animation1, animation2) => page,
+      transitionsBuilder: (context, animation1, animation2, child) => FadeTransition(opacity: animation1, child: _debugWrap(page),),
+    ),
+        (Route<dynamic> route) => false,
+  );
 }

@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^2.1.0
   js: ^0.6.3
+  another_flushbar: ^1.10.26
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +23,6 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/
