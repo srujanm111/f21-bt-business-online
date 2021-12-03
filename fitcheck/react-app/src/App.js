@@ -23,26 +23,28 @@ import Register from "./components/Register";
 import Landing from "./components/Landing";
 import MyFits from "./components/MyFits";
 import Navbar from "./components/Navbar";
+import Home from './components/Home';
 
 function App() {
     return (
         <div className="App">
             <Router>
                 <Switch>
+                    <Route path="/fits">
+                        <Navbar active="fits"></Navbar>
+                        <MyFits></MyFits>
+                    </Route>
+                    <Route path="/home">
+                        <Navbar active="home"></Navbar>
+                        <Home></Home>
+                    </Route>
                     <Route path="/login">
-                        <Navbar></Navbar>
                         <Login></Login>
                     </Route>
                     <Route path="/Register">
-                        <Navbar></Navbar>
                         <Register></Register>
                     </Route>
-                    <Route path="/MyFits">
-                        <Navbar></Navbar>
-                        <MyFits></MyFits>
-                    </Route>
                     <Route path="/">
-                        <Navbar></Navbar>
                         <Landing></Landing>
                     </Route>
                 </Switch>

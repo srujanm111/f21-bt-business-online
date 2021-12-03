@@ -3,7 +3,7 @@
  * CVGT F21-BT-BUSINESS-ONLINE
  */
 
-// Landing (index) page view
+// Home (returning user) page view
 
 import '../common';
 
@@ -24,7 +24,7 @@ import bottomNav from '../assets/bottomNav.svg';
 import login from '../assets/login.svg';
 import signup from '../assets/signup.svg';
 
-class Landing extends React.Component {
+class Home extends React.Component {
     static propTypes = {
         location: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired
@@ -36,9 +36,7 @@ class Landing extends React.Component {
     }
 
     componentDidMount() {
-        global.api.authenticate((result => {
-            if (result.success) this.redirectPage();
-        }).bind(this));
+
     }
     componentWillUnmount() {
 
@@ -51,37 +49,23 @@ class Landing extends React.Component {
     render() {
         return (
             <div>
-                {/* <div className = "text">
-                <h1>
-                    Check out these fits!
-                </h1>
-            </div>
-            <div className = "createBox">
-                <img src={createBox} alt = "" />
-            </div>
-            <div className = "recentBox">
-                <img src={recentBox} alt = "" />
-            </div>
-            <div className = "inspiredBox">
-                <img src={inspiredBox} alt = "" />
-            </div> */}
-
-                <div className="login">
-                    <NavLink to="/login"> <img src={login} alt="" /> </NavLink>
+                <div className="text">
+                    <h1>
+                        Check out these fits!
+                    </h1>
                 </div>
-
-                <div className="signup">
-                    <NavLink to="/register">
-                        <img src={signup} alt="" />
-                    </NavLink>
+                <div className="createBox">
+                    <img src={createBox} alt="" />
                 </div>
-
-                <div className="bottomBar">
-                    <img src={bottomNav} alt="" />
+                <div className="recentBox">
+                    <img src={recentBox} alt="" />
+                </div>
+                <div className="inspiredBox">
+                    <img src={inspiredBox} alt="" />
                 </div>
             </div>
         );
     }
 }
 
-export default withRouter(Landing);
+export default withRouter(Home);
