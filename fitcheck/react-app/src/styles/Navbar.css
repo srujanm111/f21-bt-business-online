@@ -1,0 +1,93 @@
+.font {
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+
+    letter-spacing: 0.02em;
+
+    color: #000000;
+}
+
+.logo {
+    position: absolute;
+    width: 250px;
+    height: 63.1px;
+    left: 65px;
+    top: 10px;
+    opacity: 0.9;
+    /* filter: invert(); */
+}
+
+.pfp {
+    position: absolute;
+    width: 63px;
+    height: 63px;
+    left: 1326px;
+    top: 15px;
+}
+
+#navbar {
+    /* background-color: rgba(70, 70, 70, 0.976); */
+    transition: top 0.2s ease, opacity 0.15s ease;
+    top: 0;
+    opacity: 0.998;
+    height: 85px;
+}
+
+/* #navbar .MuiToolbar-root {
+    min-height: 68px;
+} */
+
+#navbar #logo_wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: auto;
+}
+
+#navbar #avatar_button {
+    position: absolute;
+    right: 30px;
+    top: 4px;
+}
+
+#navbar #logoutButton {
+    position: absolute;
+    right: 29px;
+    top: 12px;
+    font-weight: 500;
+    font-size: 14.5px;
+    padding-left: 21px;
+    padding-right: 21px;
+    opacity: 0.98;
+    background-color: white;
+}
+
+#navbar #links {
+    position: absolute;
+    right: 115px;
+    top: 23.5px;
+}
+
+#navbar #links a {
+    color: black;
+    text-decoration: none;
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-right: 50px;
+    opacity: 0.9;
+    letter-spacing: 1.8px;
+}
+
+#navbar #links .nlink_a {
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+#navbar #links .nlink_i {
+    text-decoration: none;
+    font-weight: 600;
+}

@@ -6,10 +6,7 @@ Online shopping is an attractive alternative to traditional shopping, which cont
 
 Team Members:
 - Anuv Gupta
-- Ashwin Purohit
 - Gabriel Martinez
-- Ronak Shah
 - Ronnie Weaver
 - Srujan Mupparapu
-- Tejas Bansal
 - Vibhuti Sharma

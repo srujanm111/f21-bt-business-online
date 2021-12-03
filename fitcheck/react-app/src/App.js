@@ -9,9 +9,9 @@ import './common';
 
 import axios from 'axios';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
+    BrowserRouter as Router,
+    Switch,
+    Route,
 } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 
@@ -21,25 +21,36 @@ import './App.css';
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Landing from "./components/Landing";
+import Fits from "./components/Fits";
+import Navbar from "./components/Navbar";
+import Home from './components/Home';
 
 function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/login">
-            <Login></Login>
-          </Route>
-          <Route path="/register">
-            <Register></Register>
-          </Route>
-          <Route path="/">
-            <Landing></Landing>
-          </Route>
-        </Switch>
-      </Router >
-    </div >
-  );
+    return (
+        <div className="App">
+            <Router>
+                <Switch>
+                    <Route path="/fits">
+                        <Navbar active="fits"></Navbar>
+                        <Fits></Fits>
+                    </Route>
+                    <Route path="/home">
+                        <Navbar active="home"></Navbar>
+                        <Home></Home>
+                    </Route>
+                    <Route path="/login">
+                        <Login></Login>
+                    </Route>
+                    <Route path="/Register">
+                        <Register></Register>
+                    </Route>
+                    <Route path="/">
+                        <Landing></Landing>
+                    </Route>
+                </Switch>
+            </Router >
+        </div >
+    );
 }
 
 export default App;
