@@ -31,11 +31,12 @@ var mongo_client = null;
 var mongo_url = "mongodb://localhost:" + global.mongo_port;
 // initialize mongodb client
 function db_setup(next) {
-    mongo_client = mongodb.MongoClient;
-    mongo_client.connect(mongo_url, { useUnifiedTopology: true }, (e, client) => {
+    console.log("[db]", "connecting to", mongo_url);
+    mongodb.MongoClient.connect(mongo_url, { useUnifiedTopology: true }, (e, client) => {
         if (e) console.err("[db]", "connection error", e.message ? e.message : e);
         else {
-            console.log("[db]", "connected to", mongo_url);
+            console.log("[db]", "connected");
+            mongo_client = client;
             mongo_api = client.db(global.config.mongo_db_id);
             next();
         }
@@ -75,9 +76,7 @@ function db_user_exists(username, resolve) {
 function db_create_user(username, new_password, resolve) {
     mongo_api.collection('user').insertOne({
         username: username,
-        password: new_password,
-        outfits: [],
-        wardrobe: []
+        password: new_password
     }, (e, result1) => {
         if (e) {
             console.err("[db]", `error creating user with username ${username}`, e.message ? e.message : e);
@@ -85,8 +84,74 @@ function db_create_user(username, new_password, resolve) {
         } else resolve(true, result1);
     });
 }
-
-
+// create new outfit
+function db_create_outfit(user_id, name, price_total = 0, resolve) {
+    mongo_api.collection('outfit').insertOne({
+        name: name,
+        price_total: price_total,
+        clothes: [],
+        user: user_id
+    }, (e, result1) => {
+        if (e) {
+            console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, result1);
+    });
+}
+// get outfits
+function db_get_outfits(user_id) {
+    mongo_api.collection('outfit').find({
+        user: user_id
+    }, (e, cursor1) => {
+        if (e) {
+            console.err("[db]", `error deleting outfit ${id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, cursor1.toArray());
+    });
+}
+// delete outfit
+function db_delete_outfit(id) {
+    mongo_api.collection('outfit').deleteOne({
+        _id: mongodb.ObjectId(id)
+    }, (e, result1) => {
+        if (e) {
+            console.err("[db]", `error deleting outfit ${id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, result1);
+    });
+}
+// create new clothing item
+function db_create_clothing_item(user_id, name, price, product_url, image_path, store_name, resolve) {
+    mongo_api.collection('clothing').insertOne({
+        name: name,
+        price: price,
+        product_url: product_url,
+        image_path: image_path,
+        store_name: store_name,
+        user: user_id
+    }, (e, result1) => {
+        if (e) {
+            console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, result1);
+    });
+}
+// delete clothing item
+function db_delete_clothing_item(id) {
+    mongo_api.collection('clothing').deleteOne({
+        _id: mongodb.ObjectId(id)
+    }, (e, result1) => {
+        if (e) {
+            console.err("[db]", `error deleting clothing item ${id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, result1);
+    });
+}
+// close mongodb connection
+function db_exit(next) {
+    mongo_client.close();
+    next();
+}
 
 
 // express web server
@@ -94,6 +159,7 @@ var express_api = null;
 var http_server = null;
 // initialize express web server
 function web_setup() {
+    console.log("[web]", "initializing");
     express_api = express();
     // express_api.set('view engine', 'ejs');
     http_server = http.Server(express_api);
@@ -233,6 +299,45 @@ function web_routing() {
 
     /* clothes */
 }
+// close web server
+function web_exit(next) {
+    http_server.close(next);
+}
+
+
+// command line interface
+function cli_setup(next) {
+    console.log("[cli]", "initializing");
+    utils.input.on('line', (line) => {
+        var line_text = '';
+        line = line.trim();
+        if (line != '') {
+            line_text = line;
+            line = line.split(' ');
+            if (line[0] == "db" || line[0] == "database") {
+                if (line[1] == "save") {
+                    // database.save(line[2] && line[2] == "pretty");
+                }
+            } else if (line[0] == "test") {
+                console.log("[cli]", 'running tests');
+                main.test();
+            } else if (line[0] == "code") {
+                if (line.length > 1 && line[1] != "") {
+                    line_text = line_text.substring(4);
+                    var ret = eval(line_text);
+                    if (ret !== undefined) console.log(ret);
+                }
+            } else if (line[0] == "clear" || line[0] == "c") {
+                console.clear();
+            } else if (line[0] == "exit" || line[0] == "quit" || line[0] == "q") {
+                main_exit(0, _ => {
+                    console.log("[cli]", "bye");
+                });
+            }
+        }
+    });
+    if (next) next();
+}
 
 
 // main method
@@ -244,8 +349,20 @@ function main() {
         // set up web server
         web_setup();
         web_start(_ => {
-            // ready
-            console.log("[main]", "backend ready");
+            // set up cli
+            cli_setup(_ => {
+                // ready
+                console.log("[main]", "backend ready");
+            });
+        });
+    });
+}
+// exit method
+function main_exit(e, next) {
+    web_exit(_ => {
+        db_exit(_ => {
+            next();
+            process.exit(e);
         });
     });
 }

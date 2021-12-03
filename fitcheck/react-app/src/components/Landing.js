@@ -51,31 +51,14 @@ class Landing extends React.Component {
     render() {
         return (
             <div>
-                {/* <div className = "text">
-                <h1>
-                    Check out these fits!
-                </h1>
-            </div>
-            <div className = "createBox">
-                <img src={createBox} alt = "" />
-            </div>
-            <div className = "recentBox">
-                <img src={recentBox} alt = "" />
-            </div>
-            <div className = "inspiredBox">
-                <img src={inspiredBox} alt = "" />
-            </div> */}
-
                 <div className="login">
                     <NavLink to="/login"> <img src={login} alt="" /> </NavLink>
                 </div>
-
                 <div className="signup">
                     <NavLink to="/register">
                         <img src={signup} alt="" />
                     </NavLink>
                 </div>
-
                 <div className="bottomBar">
                     <img src={bottomNav} alt="" />
                 </div>

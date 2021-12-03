@@ -36,13 +36,15 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-
+        global.api.authenticate((result => {
+            if (!result.success) this.redirectPage();
+        }).bind(this));
     }
     componentWillUnmount() {
 
     }
 
-    redirectPage(page = global.config.auth_home_view) {
+    redirectPage(page = global.config.landing_view) {
         this.props.history.push(`/${page}`);
     }
 
@@ -51,7 +53,7 @@ class Home extends React.Component {
             <div>
                 <div className="text">
                     <h1>
-                        Check out these fits!
+                        Check out those fits!
                     </h1>
                 </div>
                 <div className="createBox">

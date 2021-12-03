@@ -89,16 +89,16 @@ class NavBar extends React.Component {
                         </NavLink>
                     </div>
                     <div id="links">
-                        <NavLink to='/home' class={(active == 'home' ? "nlink_a" : "nlink_i")}>
+                        <NavLink to='/home' className={(active == 'home' ? "nlink_a" : "nlink_i").toString()}>
                             Home
                         </NavLink>
-                        <NavLink to='/create' class={(active == 'create' ? "nlink_a" : "nlink_i")}>
+                        <NavLink to='/create' className={(active == 'create' ? "nlink_a" : "nlink_i").toString()}>
                             Create
                         </NavLink>
-                        <NavLink to='/fits' class={(active == 'fits' ? "nlink_a" : "nlink_i")}>
+                        <NavLink to='/fits' className={(active == 'fits' ? "nlink_a" : "nlink_i").toString()}>
                             My Fits
                         </NavLink>
-                        <NavLink to='/wardrobe' class={(active == 'wardrobe' ? "nlink_a" : "nlink_i")}>
+                        <NavLink to='/wardrobe' className={(active == 'wardrobe' ? "nlink_a" : "nlink_i").toString()}>
                             Wardrobe
                         </NavLink>
                     </div>
