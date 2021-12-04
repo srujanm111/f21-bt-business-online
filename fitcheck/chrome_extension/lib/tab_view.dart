@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class TabItem {
   final String name;
   final VoidCallback onPress;
+  final MouseCursor? mouseCursor = SystemMouseCursors.click;
 
   const TabItem(this.name, this.onPress);
 }
@@ -34,28 +35,41 @@ class _CustomTabBarState extends State<CustomTabBar> {
   Widget tab(TabItem item) {
     return Flexible(
       child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          setState(() {
-            index = widget.tabs.indexOf(item);
-            item.onPress();
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: border,
-              width: 2,
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            setState(() {
+              index = widget.tabs.indexOf(item);
+              item.onPress();
+            });
+          },
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            // onEnter: (PointerDetails details) =>
+            //     setState(() => amIHovering = true),
+            // onExit: (PointerDetails details) => setState(() {
+            //   amIHovering = false;
+            //   exitFrom = details
+            //       .localPosition; // You can use details.position if you are interested in the global position of your pointer.
+            // }),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(width: 0.85, color: border),
+                  left: BorderSide(width: 0.5, color: border),
+                  right: BorderSide(width: 0.5, color: border),
+                  bottom: BorderSide(width: 1.25, color: border),
+                ),
+              ),
+              child: Center(
+                child: CustomText(
+                  text: item.name,
+                  color: index == widget.tabs.indexOf(item) ? pink : gray,
+                  weight: "800",
+                  size: 21,
+                ),
+              ),
             ),
-          ),
-          child: Center(
-            child: CustomText(
-              text: item.name,
-              color: index == widget.tabs.indexOf(item) ? pink : gray,
-            ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }
