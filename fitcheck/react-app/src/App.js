@@ -51,6 +51,7 @@ function App() {
                     </Route>
                
                     <Route path="/">
+                        <Navbar active=""></Navbar>
                         <Landing></Landing>
                     </Route>
                 </Switch>
