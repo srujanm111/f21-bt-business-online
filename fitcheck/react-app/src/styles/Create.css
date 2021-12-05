@@ -1,0 +1,53 @@
+.clothe_border{
+    position: absolute;
+    width: 713px;
+    height: 722px;
+   
+    left: 680px;
+    top: 100px;
+    
+    border: 1px solid #666666;
+    box-sizing: border-box;
+    border-radius: 32px;
+}
+
+.fits_border{
+    position: absolute;
+    width: 537px;
+    height: 591px;
+    left: 85px;
+    top: 100px;
+    
+    border: 1px solid #666666;
+    box-sizing: border-box;
+    border-radius: 32px
+}
+.save_outfit{
+    position: absolute;
+    width: 257px;
+    height: 117px;
+    left: 90px;
+    top: 720px;
+
+    background: #E4FFB1;
+    border-radius: 32px;
+}
+.buttonStyle{
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    left: 715px;
+    top: 184px;
+      
+}
+
+.clear{
+    position: absolute;
+    width: 257px;
+    height: 117px;
+    left: 357px;
+    top: 720px;
+    
+}
+
+
