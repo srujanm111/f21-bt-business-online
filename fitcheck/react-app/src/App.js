@@ -48,13 +48,24 @@ function App() {
                         <Navbar active="home"></Navbar>
                         <Home></Home>
                     </Route>
+                    <Route path="/Wardrobe">
+                        <Navbar active="Wardrobe"></Navbar>
+                        <Wardrobe></Wardrobe>
+                    </Route>
+                    <Route path="/Create">
+                        <Navbar active="Create"></Navbar>
+                        <Create></Create>
+                    </Route>
+                
                     <Route path="/login">
                         <Login></Login>
                     </Route>
                     <Route path="/register">
                         <Register></Register>
                     </Route>
+               
                     <Route path="/">
+                        <Navbar active=""></Navbar>
                         <Landing></Landing>
                     </Route>
                 </Switch>
