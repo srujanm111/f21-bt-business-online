@@ -8,16 +8,19 @@ import 'package:chrome_extension/tab_view.dart';
 import 'package:chrome_extension/widgets.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 // hardcoded examples for demo purposes (only one links back to the store page)
-final List<ClothingItem> exampleItems = [
-  ClothingItem("https://m.media-amazon.com/images/I/91tCUunPF7L._AC_UL640_FMwebp_QL65_.jpg", "", "Levi's Regular Fit Jeans", 34.99),
-  ClothingItem("https://m.media-amazon.com/images/I/71yVf4x3DIL._AC_UL640_FMwebp_QL65_.jpg", "", "Champion Lightweight Pant", 18.99),
-  ClothingItem("https://m.media-amazon.com/images/I/71hEatvXXqS._AC_UL640_FMwebp_QL65_.jpg", "https://www.amazon.com/Nautica-Sleeve-Stretch-Cotton-X-Large/dp/B07BN2731K/ref=sr_1_7?keywords=Nautica+Soft+Cotton+Polo&qid=1638555173&sr=8-7", "Nautica Soft Cotton Polo", 24.99),
-  ClothingItem("https://m.media-amazon.com/images/I/81fobZZxLES._AC_UL640_FMwebp_QL65_.jpg", "", "Adidas Cap", 14.99),
-  ClothingItem("https://m.media-amazon.com/images/I/813UuOjWfZL._AC_UL640_FMwebp_QL65_.jpg", "", "Fashion Sneaker", 59.85),
-  ClothingItem("https://m.media-amazon.com/images/I/71T2zcEvXvL._AC_UL640_FMwebp_QL65_.jpg", "", "Timberland Leather Belt", 15.99),
-  ClothingItem("https://m.media-amazon.com/images/I/51kP6aUntBL._AC_UL640_FMwebp_QL65_.jpg", "", "Adidas Short", 12.99),
-  ClothingItem("https://m.media-amazon.com/images/I/71Z1wHQ9MYL._AC_UL640_FMwebp_QL65_.jpg", "", "Under Armour Hoodie", 59.85),
+List<ClothingItem> localItems = [
+  // ClothingItem("https://m.media-amazon.com/images/I/91tCUunPF7L._AC_UL640_FMwebp_QL65_.jpg", "", "Levi's Regular Fit Jeans", 34.99),
+  // ClothingItem("https://m.media-amazon.com/images/I/71yVf4x3DIL._AC_UL640_FMwebp_QL65_.jpg", "", "Champion Lightweight Pant", 18.99),
+  // ClothingItem("https://m.media-amazon.com/images/I/71hEatvXXqS._AC_UL640_FMwebp_QL65_.jpg", "https://www.amazon.com/Nautica-Sleeve-Stretch-Cotton-X-Large/dp/B07BN2731K/ref=sr_1_7?keywords=Nautica+Soft+Cotton+Polo&qid=1638555173&sr=8-7", "Nautica Soft Cotton Polo", 24.99),
+  // ClothingItem("https://m.media-amazon.com/images/I/81fobZZxLES._AC_UL640_FMwebp_QL65_.jpg", "", "Adidas Cap", 14.99),
+  // ClothingItem("https://m.media-amazon.com/images/I/813UuOjWfZL._AC_UL640_FMwebp_QL65_.jpg", "", "Fashion Sneaker", 59.85),
+  // ClothingItem("https://m.media-amazon.com/images/I/71T2zcEvXvL._AC_UL640_FMwebp_QL65_.jpg", "", "Timberland Leather Belt", 15.99),
+  // ClothingItem("https://m.media-amazon.com/images/I/51kP6aUntBL._AC_UL640_FMwebp_QL65_.jpg", "", "Adidas Short", 12.99),
+  // ClothingItem("https://m.media-amazon.com/images/I/71Z1wHQ9MYL._AC_UL640_FMwebp_QL65_.jpg", "", "Under Armour Hoodie", 59.85),
 ];
 
 class FitCheck extends StatelessWidget {
@@ -48,20 +51,22 @@ class FitCheck extends StatelessWidget {
 }
 
 class AddItem extends StatefulWidget {
-
-  const AddItem({ Key? key }) : super(key: key);
+  const AddItem({Key? key}) : super(key: key);
 
   @override
   _AddItemState createState() => _AddItemState();
 }
 
 class _AddItemState extends State<AddItem> {
-
   final nameController = TextEditingController();
   final priceController = TextEditingController();
 
   String? imageUrl;
   String? pageUrl;
+  // String? imageUrl =
+  //     "https://m.media-amazon.com/images/I/91tCUunPF7L._AC_UL640_FMwebp_QL65_.jpg";
+  // String? pageUrl =
+  //     "https://www.amazon.com/Nautica-Sleeve-Stretch-Cotton-X-Large/dp/B07BN2731K/ref=sr_1_7?keywords=Nautica+Soft+Cotton+Polo&qid=1638555173&sr=8-7";
 
   @override
   void initState() {
@@ -89,7 +94,8 @@ class _AddItemState extends State<AddItem> {
         children: [
           Image.asset('assets/shirt.png'),
           CustomText(
-            text: "Right-Click on a clothing item you like and it will show up here!",
+            text:
+                "Right-Click on a clothing item you like and it will show up here!",
             align: TextAlign.center,
           ),
           SizedBox(height: 128),
@@ -122,45 +128,128 @@ class _AddItemState extends State<AddItem> {
           SizedBox(height: 10),
           CustomTextField(hint: "Price", controller: priceController),
           Spacer(),
-          RoundButton(text: "Add to Wardrobe", onPress: () async {
-            final item = ClothingItem(imageUrl!, pageUrl!, nameController.text, double.parse(priceController.text));
-            exampleItems.insert(0, item);
-            _addItemToBackend(item);
-            setState(() {
-              imageUrl = null;
-              pageUrl = null;
-            });
-            await Flushbar(
-              borderRadius: BorderRadius.circular(10),
-              margin: EdgeInsets.all(14),
-              messageText: CustomText(
-                text: '${nameController.text} was added!',
-                size: 16,
-                color: white,
-              ),
-              duration: Duration(seconds: 3),
-              isDismissible: true,
-            ).show(context);
-          }),
+          RoundButton(
+              text: "Add to Wardrobe",
+              onPress: () {
+                // js.context.callMethod('alert', ["trace - onpress"]);
+                final item = ClothingItem(imageUrl!, pageUrl!,
+                    nameController.text, double.parse(priceController.text));
+                // localItems.insert(0, item);
+                // _addItemToBackend(item);
+                _addItemToBackend(item, (bool success) async {
+                  if (success) {
+                    setState(() {
+                      imageUrl = null;
+                      pageUrl = null;
+                    });
+                    await Flushbar(
+                      borderRadius: BorderRadius.circular(10),
+                      margin: EdgeInsets.all(14),
+                      messageText: CustomText(
+                        text: '${nameController.text} was added!',
+                        size: 16,
+                        color: white,
+                      ),
+                      duration: Duration(seconds: 3),
+                      isDismissible: true,
+                    ).show(context);
+                  }
+                });
+              }),
         ],
       ),
     );
   }
 
-  void _addItemToBackend(ClothingItem item) async {
+  _addItemToBackend(ClothingItem item, Function(bool) next) async {
     // TODO add clothing item to backend database
-  }
+    // js.context.callMethod('alert', ["trace - add item to backend"]);
 
+    final response =
+        await http.post(Uri.http(api_url, 'api/create_clothing'), body: {
+      'name': item.name,
+      'price': item.price.toString(),
+      'page_url': item.pageUrl,
+      'image_url': item.imageUrl,
+      'store_name': "",
+      'token': api_token,
+    });
+
+    // js.context.callMethod('alert', [response.statusCode.toString()]);
+
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      // js.context.callMethod('alert', ["success"]);
+      // js.context.callMethod('alert', [body.toString()]);
+      js.context['console'].callMethod('log', [body.toString()]);
+      print(body);
+      next(true);
+    } else {
+      var body = jsonDecode(response.body);
+      // js.context.callMethod('alert', [body['message'].toString()]);
+      js.context['console'].callMethod('log', [body['message'].toString()]);
+      print(body);
+      next(false);
+    }
+  }
 }
 
 class Wardrobe extends StatefulWidget {
-  const Wardrobe({ Key? key }) : super(key: key);
+  const Wardrobe({Key? key}) : super(key: key);
 
   @override
   _WardrobeState createState() => _WardrobeState();
 }
 
 class _WardrobeState extends State<Wardrobe> {
+  // final List<ClothingItem> wardrobeItems = [];
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) => loadWardrobe(context));
+  }
+
+  void loadWardrobe(BuildContext context) async {
+    // js.context.callMethod('alert', ["loading wardrobe"]);
+
+    setState(() {
+      localItems.clear();
+    });
+
+    final response =
+        await http.post(Uri.http(api_url, 'api/get_clothing'), body: {
+      'token': api_token,
+    });
+
+    // js.context.callMethod('alert', [response.statusCode.toString()]);
+
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      // js.context.callMethod('alert', ["success"]);
+      // js.context.callMethod('alert', [body.toString()]);
+      // js.context['console'].callMethod('log', [body['list'].toString()]);
+      print(body);
+
+      js.context['console'].callMethod('log', [body['list'].length]);
+
+      body['list'].forEach((item) {
+        js.context['console'].callMethod('log', [item.toString()]);
+        // js.context.callMethod('alert', [item['image_url']]);
+        ClothingItem new_item = ClothingItem(item['image_path'],
+            item['product_url'], item['name'], item['price']);
+        setState(() {
+          localItems.insert(0, new_item);
+        });
+      });
+      // js.context['console'].callMethod('log', [body]);
+    } else {
+      var body = jsonDecode(response.body);
+      // js.context.callMethod('alert', [body['message'].toString()]);
+      js.context['console'].callMethod('log', [body['message'].toString()]);
+      print(body);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -169,9 +258,9 @@ class _WardrobeState extends State<Wardrobe> {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
-        itemCount: exampleItems.length,
+        itemCount: localItems.length,
         itemBuilder: (BuildContext context, int index) {
-          final item = exampleItems[index];
+          final item = localItems[index];
           return GestureDetector(
             onTap: () => js.context.callMethod('open', [item.pageUrl]),
             child: Padding(
@@ -186,20 +275,29 @@ class _WardrobeState extends State<Wardrobe> {
                 ),
                 child: Stack(
                   children: [
-                    Align(alignment: Alignment.center, child: Image.network(item.imageUrl)),
-                    Align(alignment: Alignment.topRight, child: Padding(
-                      padding: const EdgeInsets.only(top: 8, right: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: pink,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    Align(
+                        alignment: Alignment.center,
+                        child: Image.network(item.imageUrl)),
+                    Align(
+                        alignment: Alignment.topRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 2),
-                          child: CustomText(text: item.price.toString(), color: white, size: 16,),
-                        ),
-                      ),
-                    )),
+                          padding: const EdgeInsets.only(top: 8, right: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: pink,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, bottom: 8, top: 2),
+                              child: CustomText(
+                                text: item.price.toString(),
+                                color: white,
+                                size: 16,
+                              ),
+                            ),
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -209,12 +307,9 @@ class _WardrobeState extends State<Wardrobe> {
       ),
     );
   }
-  
-  
 }
 
 class ClothingItem {
-
   final String imageUrl;
   final String pageUrl;
   final String name;

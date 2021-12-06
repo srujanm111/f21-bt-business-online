@@ -24,12 +24,22 @@ import Landing from "./components/Landing";
 import Fits from "./components/Fits";
 import Navbar from "./components/Navbar";
 import Home from './components/Home';
+import Wardrobe from './components/Wardrobe';
+import Create from './components/Create';
 
 function App() {
     return (
         <div className="App">
             <Router>
                 <Switch>
+                    <Route path="/create">
+                        <Navbar active="create"></Navbar>
+                        <Create></Create>
+                    </Route>
+                    <Route path="/wardrobe">
+                        <Navbar active="wardrobe"></Navbar>
+                        <Wardrobe></Wardrobe>
+                    </Route>
                     <Route path="/fits">
                         <Navbar active="fits"></Navbar>
                         <Fits></Fits>
@@ -41,7 +51,7 @@ function App() {
                     <Route path="/login">
                         <Login></Login>
                     </Route>
-                    <Route path="/Register">
+                    <Route path="/register">
                         <Register></Register>
                     </Route>
                     <Route path="/">

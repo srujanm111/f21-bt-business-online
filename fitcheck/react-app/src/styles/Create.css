@@ -1,0 +1,27 @@
+button.clearAllButton {
+    background-color: #dfdfdf;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e2e2e2;
+    font-size: 18px;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+button.clearAllButton:hover {
+    background-color: #e3e3e3;
+}
+
+button.saveOutfitButton {
+    background-color: #e4ffb1;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e5ffb2;
+    font-size: 18px;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+button.saveOutfitButton:hover {
+    background-color: #e2f7bb;
+}

@@ -16,6 +16,7 @@ const readline = require("readline");
 const ejwt = require("express-jwt");
 const jwt = require("jsonwebtoken");
 const utils = require("./utils");
+const cors = require("cors");
 
 
 // environment
@@ -99,18 +100,18 @@ function db_create_outfit(user_id, name, price_total = 0, resolve) {
     });
 }
 // get outfits
-function db_get_outfits(user_id) {
+function db_get_outfits(user_id, resolve) {
     mongo_api.collection('outfit').find({
         user: user_id
     }, (e, cursor1) => {
         if (e) {
             console.err("[db]", `error deleting outfit ${id}`, e.message ? e.message : e);
             resolve(false, e);
-        } else resolve(true, cursor1.toArray());
+        } else resolve(cursor1.toArray());
     });
 }
 // delete outfit
-function db_delete_outfit(id) {
+function db_delete_outfit(id, resolve) {
     mongo_api.collection('outfit').deleteOne({
         _id: mongodb.ObjectId(id)
     }, (e, result1) => {
@@ -133,11 +134,22 @@ function db_create_clothing_item(user_id, name, price, product_url, image_path, 
         if (e) {
             console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
             resolve(false, e);
-        } else resolve(true, result1);
+        } else resolve(result1.insertedId, result1);
+    });
+}
+// get clothing items
+function db_get_clothing_items(user_id, resolve) {
+    mongo_api.collection('clothing').find({
+        user: user_id
+    }).toArray((e, items) => {
+        if (e) {
+            console.err("[db]", `error getting clothing items for user ${user_id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(items);
     });
 }
 // delete clothing item
-function db_delete_clothing_item(id) {
+function db_delete_clothing_item(id, resolve) {
     mongo_api.collection('clothing').deleteOne({
         _id: mongodb.ObjectId(id)
     }, (e, result1) => {
@@ -165,6 +177,7 @@ function web_setup() {
     http_server = http.Server(express_api);
     express_api.use(express.json());
     express_api.use(express.urlencoded({ extended: true }));
+    // express_api.use(cors);
     express_api.use(utils.web_cors);
     // express_api.use(express.static("static"));
     express_api.get("/", (req, res) => {
@@ -287,9 +300,21 @@ function web_routing() {
     // authenticate token
     express_api.get("/api/auth", web_require_token() /* middleware decodes JWT */, (req, res) => {
         // verify decoded user exists
-        db_user_exists(req.user.username, (result1) => {
-            if (result1 === false) return web_return_error(req, res, 500, "Database error");
-            if (result1 === null) return web_return_error(req, res, 400, "User not found");
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // authenticate user
+            return web_return_data(req, res, { username: req.user.username });
+        });
+    });
+    express_api.get("/api/auth_alt", (req, res) => {
+        // authenticate token
+        req.user = web_verify_token(req.body.token);
+        if (req.user == null) return web_return_error(req, res, 401, "Unauthorized");
+        // verify decoded user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
             // authenticate user
             return web_return_data(req, res, { username: req.user.username });
         });
@@ -298,6 +323,50 @@ function web_routing() {
     /* outfits */
 
     /* clothes */
+    // create clothing item
+    express_api.post("/api/create_clothing", (req, res) => {
+        // authenticate token
+        req.user = web_verify_token(req.body.token);
+        if (req.user == null) return web_return_error(req, res, 401, "Unauthorized");
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // create clothing item
+            db_create_clothing_item(user._id.toString(), req.body.name, parseFloat(req.body.price), req.body.page_url, req.body.image_url, req.body.store_name, (item_id) => {
+                if (item_id === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, { id: item_id.toString() });
+            });
+        });
+    });
+    // get clothing items
+    express_api.post("/api/get_clothing", (req, res) => {
+        // authenticate token
+        req.user = web_verify_token(req.body.token);
+        if (req.user == null) return web_return_error(req, res, 401, "Unauthorized");
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // get clothing items
+            db_get_clothing_items(user._id.toString(), (item_list) => {
+                if (item_list === false) return web_return_error(req, res, 500, "Database error");
+                var result_list = [];
+                for (var i_l in item_list) {
+                    result_list.push({
+                        name: item_list[i_l].name,
+                        price: item_list[i_l].price,
+                        product_url: item_list[i_l].product_url,
+                        image_path: item_list[i_l].image_path,
+                        store_name: item_list[i_l].store_name,
+                        user: item_list[i_l].user,
+                        id: item_list[i_l]._id.toString()
+                    });
+                }
+                return web_return_data(req, res, { list: result_list });
+            });
+        });
+    });
 }
 // close web server
 function web_exit(next) {
@@ -319,9 +388,11 @@ function cli_setup(next) {
                     // database.save(line[2] && line[2] == "pretty");
                 }
             } else if (line[0] == "test") {
-                console.log("[cli]", 'running tests');
-                main.test();
-            } else if (line[0] == "code") {
+                console.log("[cli]", "running tests");
+                main_test(_ => {
+                    console.log("[cli]", "tests complete");
+                });
+            } else if (line[0] == "code" || line[0] == "eval") {
                 if (line.length > 1 && line[1] != "") {
                     line_text = line_text.substring(4);
                     var ret = eval(line_text);
@@ -357,11 +428,17 @@ function main() {
         });
     });
 }
+// test method
+function main_test(next = null) {
+    console.log("[main]", "testing");
+    // TODO: add some tests here
+    if (next) next();
+}
 // exit method
-function main_exit(e, next) {
+function main_exit(e, next = null) {
     web_exit(_ => {
         db_exit(_ => {
-            next();
+            if (next) next();
             process.exit(e);
         });
     });

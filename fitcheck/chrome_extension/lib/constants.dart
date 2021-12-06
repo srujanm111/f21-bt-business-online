@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const web_url = "localhost:3000";
+const api_url = "localhost:8000";
+var api_token = "";
+
 const pink = Color(0xFFFE9EB9);
 const green = Color(0xFFE4FFB1);
 const yellow = Color(0xFFFBE7A2);

@@ -5,13 +5,55 @@ import 'package:chrome_extension/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+// import 'package:chrome/chrome.dart' as chrome;
+import 'package:http/http.dart' as http;
+import 'dart:js' as js;
+import 'dart:convert';
+import 'dart:html' as html;
+import 'package:crypto/crypto.dart' as crypto;
+
 import 'main.dart';
 
-class Startup extends StatelessWidget {
+class Startup extends StatefulWidget {
+  const Startup({Key? key}) : super(key: key);
+
+  @override
+  State<Startup> createState() => _StartupState();
+}
+
+class _StartupState extends State<Startup> {
   final GlobalKey<CustomTabBarViewState> tabViewKey =
       GlobalKey<CustomTabBarViewState>();
 
-  Startup({Key? key}) : super(key: key);
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) => checkAuth(context));
+  }
+
+  void checkAuth(BuildContext context) async {
+    // api_token = ;
+    // html.chrome.storage.local.get(['fc_api_token']).then((Map<String, String> vals) {
+    //   var highscore = vals['highscore'];
+    //   document.body.append(new Element.html("<p>$highscore</p>"));
+    // });
+    // if (html.window.localStorage.containsValue('fc_api_token')) {
+    //   api_token = html.window.localStorage['fc_api_token']!;
+    // } else {
+    //   api_token = "";
+    // }
+    // js.context.callMethod('alert', [api_token]);
+    // final response = await http.post(Uri.http(web_url, 'api/auth_alt'), body: {
+    //   'token': api_token,
+    // });
+    // if (response.statusCode == 200) {
+    //   var body = jsonDecode(response.body);
+    //   print(body);
+    //   pushReplace(FitCheck(), context);
+    // } else {
+    //   var body = jsonDecode(response.body);
+    //   print(body);
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +120,8 @@ class _SignUpState extends State<SignUp> {
               text: "Go To Website",
               onPress: () {
                 // TODO open up website
+                js.context.callMethod(
+                    'open', ['http://' + web_url /* + '/register' */]);
               }),
         ],
       ),
@@ -85,11 +129,46 @@ class _SignUpState extends State<SignUp> {
   }
 }
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
+  const LogIn({Key? key}) : super(key: key);
+
+  @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  LogIn({Key? key}) : super(key: key);
+  String loginErrorText = " ";
+
+  requestLogIn(String username, String password, BuildContext context) async {
+    username = username.trim();
+    password = password.trim();
+    if (username != "" && password != "") {
+      final password_hash =
+          crypto.sha256.convert(utf8.encode(password)).toString();
+      final response = await http.post(Uri.http(web_url, 'api/sign_in'), body: {
+        'username': username,
+        'password': password_hash,
+      });
+      if (response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        api_token = body['token'].toString();
+        html.window.localStorage['fc_api_token'] = api_token;
+        setState(() {
+          loginErrorText = " ";
+        });
+        pushReplace(FitCheck(), context);
+      } else {
+        var body = jsonDecode(response.body);
+        setState(() {
+          loginErrorText = body['message'];
+        });
+        print(body);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +214,14 @@ class LogIn extends StatelessWidget {
           SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                // color: darkRed,
-                child: CustomText(
-                    text: " ",
-                    size: 15,
-                    letterSpacing: 0.9,
-                    align: TextAlign.center,
-                    color: darkRed),
+            child: Container(
+              // color: darkRed,
+              child: CustomText(
+                text: loginErrorText,
+                size: 15,
+                letterSpacing: 0.9,
+                align: TextAlign.center,
+                color: darkRed,
               ),
             ),
           ),
@@ -155,7 +232,8 @@ class LogIn extends StatelessWidget {
                 final username = usernameController.text;
                 final password = passwordController.text;
                 // TODO login with actual credentials or example account
-                pushReplace(FitCheck(), context);
+                requestLogIn(username, password, context);
+                // pushReplace(FitCheck(), context);
               }),
         ],
       ),
