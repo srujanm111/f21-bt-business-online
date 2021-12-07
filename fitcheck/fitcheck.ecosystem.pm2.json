@@ -1,0 +1,24 @@
+{
+    "apps": [
+        {
+            "name": "fitcheck-frontend",
+            "script": "/home/ubuntu/nodejs-apps/fitcheck/react-app/serve.sh",
+            "cwd": "/home/ubuntu/nodejs-apps/fitcheck/react-app",
+            "error_file": "/home/ubuntu/nodejs-apps/fitcheck/react-app/react-app.log",
+            "out_file": "/home/ubuntu/nodejs-apps/fitcheck/react-app/react-app.log",
+            "interpreter": "/bin/bash",
+            "max_memory_restart": "100M",
+            "restart_delay": "3000"
+        },
+        {
+            "name": "fitcheck-backend",
+            "script": "/home/ubuntu/nodejs-apps/fitcheck/express-api/serve.sh",
+            "cwd": "/home/ubuntu/nodejs-apps/fitcheck/express-api",
+            "error_file": "/home/ubuntu/nodejs-apps/fitcheck/express-api/express-api.log",
+            "out_file": "/home/ubuntu/nodejs-apps/fitcheck/express-api/express-api.log",
+            "interpreter": "/bin/bash",
+            "max_memory_restart": "100M",
+            "restart_delay": "3000"
+        }
+    ]
+}

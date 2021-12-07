@@ -1,5 +1,5 @@
 {
-    "http_port": 80,
+    "http_port": 3029,
     "mongo_port": 27017,
     "mongo_db_id": "fitcheck",
     "jwt": {
