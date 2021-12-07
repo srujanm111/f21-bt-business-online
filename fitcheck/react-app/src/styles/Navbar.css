@@ -91,3 +91,11 @@
     text-decoration: none;
     font-weight: 600;
 }
+
+#navbar button.logoutButton {
+    background-color: white;
+    transition: background-color 0.2s ease;
+}
+#navbar button.logoutButton:hover {
+    background-color: #f6f6f6;
+}

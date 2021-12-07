@@ -3,7 +3,7 @@
  * CVGT F21-BT-BUSINESS-ONLINE
  */
 
-// Landing (index) page view
+// Landing (index/home) page view
 
 import '../common';
 
@@ -13,16 +13,8 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Landing.css';
-
-import createBox from '../assets/createBox.svg';
-import recentBox from '../assets/recentBox.svg';
-import inspiredBox from '../assets/inspiredBox.svg';
-import bottomNav from '../assets/bottomNav.svg';
-import login from '../assets/login.svg';
-import signup from '../assets/signup.svg';
 
 class Landing extends React.Component {
     static propTypes = {
@@ -36,9 +28,9 @@ class Landing extends React.Component {
     }
 
     componentDidMount() {
-        global.api.authenticate((result => {
-            if (result.success) this.redirectPage();
-        }).bind(this));
+        // global.api.authenticate((is_authenticated => {
+        //     if (is_authenticated) this.redirectPage();
+        // }).bind(this));
     }
     componentWillUnmount() {
 
@@ -50,18 +42,20 @@ class Landing extends React.Component {
 
     render() {
         return (
-            <div>
-                <div className="login">
-                    <NavLink to="/login"> <img src={login} alt="" /> </NavLink>
-                </div>
-                <div className="signup">
-                    <NavLink to="/register">
-                        <img src={signup} alt="" />
-                    </NavLink>
-                </div>
-                <div className="bottomBar">
-                    <img src={bottomNav} alt="" />
-                </div>
+            <div className="center h100">
+                <Container>
+                    <Row>
+                        <Col>
+                            <div className="centerTitle">
+                                <h1 className="title titleFont"> FitCheck </h1>
+                            </div>
+                        </Col>
+                    </Row>
+                    <div className="homepageOptions">
+                        <NavLink className="f100" to="/login"> Sign In </NavLink>
+                        <NavLink className="f100" to="/register"> Sign Up </NavLink>
+                    </div>
+                </Container>
             </div>
         );
     }

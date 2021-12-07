@@ -56,16 +56,15 @@ function App() {
                         <Navbar active="Create"></Navbar>
                         <Create></Create>
                     </Route>
-                
+
                     <Route path="/login">
                         <Login></Login>
                     </Route>
                     <Route path="/register">
                         <Register></Register>
                     </Route>
-               
+
                     <Route path="/">
-                        <Navbar active=""></Navbar>
                         <Landing></Landing>
                     </Route>
                 </Switch>

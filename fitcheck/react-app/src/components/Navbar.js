@@ -24,6 +24,7 @@ class NavBar extends React.Component {
         super(props);
         this.state = {
             color: "#FE9EB9",
+            showMenu: false,
         };
     }
 
@@ -71,6 +72,24 @@ class NavBar extends React.Component {
         // });
     }
 
+    toggleMenu() {
+        this.setState({
+            showMenu: !(this.state.showMenu)
+        });
+    }
+
+    clickAvatar() {
+        this.toggleMenu();
+    }
+
+    clickLogout() {
+        if (window.confirm("Leave FitCheck?")) {
+            setTimeout(_ => {
+                global.api.logout();
+            }, 50);
+        }
+    }
+
     render() {
         var active = this.props.active;
         console.log(`NavBar.active: ${active}`);
@@ -89,9 +108,9 @@ class NavBar extends React.Component {
                         </NavLink>
                     </div>
                     <div id="links">
-                        <NavLink to='/home' className={(active == 'home' ? "nlink_a" : "nlink_i").toString()}>
+                        {/* <NavLink to='/home' className={(active == 'home' ? "nlink_a" : "nlink_i").toString()}>
                             Home
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink to='/create' className={(active == 'create' ? "nlink_a" : "nlink_i").toString()}>
                             Create
                         </NavLink>
@@ -102,9 +121,12 @@ class NavBar extends React.Component {
                             Wardrobe
                         </NavLink>
                     </div>
-                    <IconButton edge="start" color="inherit" id="avatar_button">
+                    <IconButton edge="start" color="inherit" id="avatar_button" onClick={_ => { this.clickAvatar(); }}>
                         <Avatar alt="FC" src={pfp_asset} style={{ height: '50px', width: '50px' }} />
                     </IconButton>
+                    <div style={{ display: (this.state.showMenu ? 'block' : 'none'), position: 'fixed', top: '85px', right: '0', height: '60px', width: '170px', backgroundColor: 'white', borderRadius: '0 0 0 10px', border: '1px solid #f5f5f5', borderTop: 'none', borderRight: 'none', boxShadow: '0 3px 6px 2px rgba(0, 0, 0, 0.07)' }}>
+                        <button onClick={_ => { this.clickLogout(); }} className="logoutButton" style={{ letterSpacing: '1px', fontSize: '19px', height: '100%', width: '100%', border: 'none', outline: 'none', color: '#373737', borderRadius: '0 0 0 10px' }}>LOGOUT</button>
+                    </div>
                 </Toolbar>
             </AppBar>
         );

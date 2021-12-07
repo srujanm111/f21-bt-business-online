@@ -112,7 +112,7 @@ class Login extends React.Component {
     render() {
         return (
             <div className="center h100">
-                <img className="bottomNav" src={bottomNav} />
+                {/* <img className="bottomNav" src={bottomNav} /> */}
                 <div className="centerTitle">
                     <h1 className="loginTitle titleFont">Log In</h1>
                 </div>

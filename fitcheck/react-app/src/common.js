@@ -12,7 +12,7 @@ global.config = {
     // control views
     api_route: 'api',
     landing_view: 'landing',
-    auth_home_view: 'home',
+    auth_home_view: 'wardrobe',
     // control urls
     api_url: `${window.location.protocol}//${window.location.host}`,  // initial value
     landing_url: `${window.location.protocol}//${window.location.host}`,
