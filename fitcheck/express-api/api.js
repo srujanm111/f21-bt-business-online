@@ -86,28 +86,42 @@ function db_create_user(username, new_password, resolve) {
     });
 }
 // create new outfit
-function db_create_outfit(user_id, name, price_total = 0, resolve) {
+function db_create_outfit(user_id, name, price_total, item_list, resolve) {
     mongo_api.collection('outfit').insertOne({
         name: name,
         price_total: price_total,
         clothes: [],
-        user: user_id
+        user: user_id,
+        clothes: item_list,
+        starred: false
     }, (e, result1) => {
         if (e) {
             console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
             resolve(false, e);
-        } else resolve(true, result1);
+        } else resolve(result1.insertedId, result1);
     });
 }
 // get outfits
 function db_get_outfits(user_id, resolve) {
     mongo_api.collection('outfit').find({
         user: user_id
-    }, (e, cursor1) => {
+    }).toArray((e, outfits) => {
         if (e) {
-            console.err("[db]", `error deleting outfit ${id}`, e.message ? e.message : e);
+            console.err("[db]", `error getting outfits for user ${user_id}`, e.message ? e.message : e);
             resolve(false, e);
-        } else resolve(cursor1.toArray());
+        } else resolve(outfits);
+    });
+}
+// get outfit
+function db_get_outfit(user_id, outfit_id, resolve) {
+    mongo_api.collection('outfit').findOne({
+        _id: mongodb.ObjectId(outfit_id),
+        user: user_id,
+    }, (e, outfit) => {
+        if (e) {
+            console.err("[db]", `error getting outfit ${outfit_id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(outfit);
     });
 }
 // delete outfit
@@ -321,6 +335,66 @@ function web_routing() {
     });
 
     /* outfits */
+    // create outfit
+    express_api.post("/api/create_outfit", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // create outfit
+            db_create_outfit(user._id.toString(), req.body.name, parseFloat(req.body.price_total), req.body.item_list, (outfit_id) => {
+                if (outfit_id === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, { id: outfit_id.toString() });
+            });
+        });
+    });
+    // get outfit list
+    express_api.post("/api/get_outfits", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // get outfits
+            db_get_outfits(user._id.toString(), (outfit_list) => {
+                if (outfit_list === false) return web_return_error(req, res, 500, "Database error");
+                var result_list = [];
+                for (var o_l in outfit_list) {
+                    var outfit_summary = {
+                        name: outfit_list[o_l].name,
+                        price_total: outfit_list[o_l].price_total,
+                        starred: outfit_list[o_l].starred,
+                        id: outfit_list[o_l]._id.toString()
+                    };
+                    if (req.body.hasOwnProperty('include_clothes') && req.body.include_clothes == true) {
+                        outfit_summary['clothes'] = outfit_list[o_l].clothes;
+                    }
+                    result_list.push(outfit_summary);
+                }
+                return web_return_data(req, res, { list: result_list });
+            });
+        });
+    });
+    // get single outfit
+    express_api.post("/api/get_outfit", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // get single outfit
+            db_get_outfit(user._id.toString(), req.body.outfit_id, (outfit) => {
+                if (outfit === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, {
+                    outfit: {
+                        id: req.body.outfit_id,
+                        name: outfit.name,
+                        price_total: outfit.price_total,
+                        clothes: outfit.clothes,
+                        starred: outfit.starred
+                    }
+                });
+            });
+        });
+    });
 
     /* clothes */
     // create clothing item
@@ -364,6 +438,19 @@ function web_routing() {
                     });
                 }
                 return web_return_data(req, res, { list: result_list });
+            });
+        });
+    });
+    // delete clothing item
+    express_api.post("/api/delete_clothing", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // delete clothing item
+            db_delete_clothing_item(req.body.item, (deleted) => {
+                if (deleted === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, {});
             });
         });
     });
