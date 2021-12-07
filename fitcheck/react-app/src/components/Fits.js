@@ -137,7 +137,17 @@ class Fits extends React.Component {
                                     var item = this.getItemById(item_id);
                                     // console.log(item);
                                     return (
-                                        <div key={c.toString()} className="outfitItemImage" style={{ cursor: 'pointer', width: '100%', height: ((this.state.outfitHeight) / outfit.clothes.length) + 'px', backgroundImage: `url(${item.image_path})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}></div>
+                                        <div key={c.toString()} style={{ cursor: 'pointer', width: '100%', height: ((this.state.outfitHeight) / outfit.clothes.length) + 'px', position: 'relative' }}>
+                                            <div className="outfitItemImage" style={{ backgroundImage: `url(${item.image_path})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', zIndex: '1' }}></div>
+                                            <div className="outfitItemDetail" style={{ height: '100%', width: '100%', boxSizing: 'border-box', padding: '10px 20px', position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', zIndex: '2' }}>
+                                                <div style={{ position: 'absolute', top: '10px', left: '0', width: '100%', minHeight: '20px', height: 'auto', boxSizing: 'border-box', paddingLeft: '20px' }}>
+                                                    <span style={{ fontWeight: '800', fontSize: '20px' }}>{item.name}</span>
+                                                </div>
+                                                <div style={{ position: 'absolute', bottom: '10px', left: '0', width: '100%', minHeight: '20px', height: 'auto', boxSizing: 'border-box', paddingLeft: '20px' }}>
+                                                    <span style={{ fontWeight: '800', fontSize: '25px' }}>${item.price.toFixed(2)}</span><br />
+                                                </div>
+                                            </div>
+                                        </div>
                                     );
                                 })}
                             </div>
