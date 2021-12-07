@@ -67,3 +67,12 @@ div.block_content {
     margin: 0 5px 7px 5px;
     font-size: 17px;
 }
+
+.micon {
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+.micon:hover {
+    opacity: 1;
+}

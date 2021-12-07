@@ -15,7 +15,7 @@ import { withRouter } from "react-router-dom";
 
 
 import bottomNav from '../assets/bottomNav.svg';
-import '../styles/MyFits.css';
+import '../styles/Fits.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Login.css';
