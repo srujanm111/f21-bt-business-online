@@ -1,11 +1,10 @@
 import 'package:chrome_extension/constants.dart';
-import 'package:chrome_extension/fitcheck.dart';
 import 'package:chrome_extension/tab_view.dart';
 import 'package:chrome_extension/widgets.dart';
+import 'package:chrome_extension/fitcheck.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-// import 'package:chrome/chrome.dart' as chrome;
 import 'package:http/http.dart' as http;
 import 'dart:js' as js;
 import 'dart:convert';
@@ -27,32 +26,6 @@ class _StartupState extends State<Startup> {
 
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => checkAuth(context));
-  }
-
-  void checkAuth(BuildContext context) async {
-    // api_token = ;
-    // html.chrome.storage.local.get(['fc_api_token']).then((Map<String, String> vals) {
-    //   var highscore = vals['highscore'];
-    //   document.body.append(new Element.html("<p>$highscore</p>"));
-    // });
-    // if (html.window.localStorage.containsValue('fc_api_token')) {
-    //   api_token = html.window.localStorage['fc_api_token']!;
-    // } else {
-    //   api_token = "";
-    // }
-    // js.context.callMethod('alert', [api_token]);
-    // final response = await http.post(Uri.http(web_url, 'api/auth_alt'), body: {
-    //   'token': api_token,
-    // });
-    // if (response.statusCode == 200) {
-    //   var body = jsonDecode(response.body);
-    //   print(body);
-    //   pushReplace(FitCheck(), context);
-    // } else {
-    //   var body = jsonDecode(response.body);
-    //   print(body);
-    // }
   }
 
   @override
@@ -119,7 +92,7 @@ class _SignUpState extends State<SignUp> {
           RoundButton(
               text: "Go To Website",
               onPress: () {
-                // TODO open up website
+                // open up website
                 js.context.callMethod(
                     'open', ['http://' + web_url /* + '/register' */]);
               }),
@@ -142,6 +115,28 @@ class _LogInState extends State<LogIn> {
 
   String loginErrorText = " ";
 
+  final channel = html.BroadcastChannel('auth');
+
+  void initState() {
+    super.initState();
+
+    this.channel.onMessage.listen((event) {
+      // js.context['console'].callMethod('log', [event.data.toString()]);
+      // js.context.callMethod('alert', [event.data.toString()]);
+      var data = jsonDecode(event.data);
+      if (data['action'] == 'notify' && data['value'] == 'complete') {
+        pushReplace(FitCheck(), context);
+      }
+    });
+  }
+
+  saveToken(String token) {
+    api_token = token.toString();
+    this
+        .channel
+        .postMessage(jsonEncode({"action": "save", "value": api_token}));
+  }
+
   requestLogIn(String username, String password, BuildContext context) async {
     username = username.trim();
     password = password.trim();
@@ -154,12 +149,11 @@ class _LogInState extends State<LogIn> {
       });
       if (response.statusCode == 200) {
         var body = jsonDecode(response.body);
-        api_token = body['token'].toString();
-        html.window.localStorage['fc_api_token'] = api_token;
+        var new_token = body['token'].toString();
         setState(() {
           loginErrorText = " ";
         });
-        pushReplace(FitCheck(), context);
+        this.saveToken(new_token);
       } else {
         var body = jsonDecode(response.body);
         setState(() {
@@ -188,11 +182,12 @@ class _LogInState extends State<LogIn> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: CustomText(
-                text:
-                    "Awesome, you already have an account! Just sign in to start expanding your wardrobe!",
-                size: 20,
-                letterSpacing: 0.7,
-                weight: "500"),
+              text:
+                  "Awesome, you already have an account! Just sign in to start expanding your wardrobe!",
+              size: 20,
+              letterSpacing: 0.7,
+              weight: "500",
+            ),
           ),
           SizedBox(height: 20),
           Padding(
@@ -231,7 +226,7 @@ class _LogInState extends State<LogIn> {
               onPress: () {
                 final username = usernameController.text;
                 final password = passwordController.text;
-                // TODO login with actual credentials or example account
+                // login with actual credentials or example account
                 requestLogIn(username, password, context);
                 // pushReplace(FitCheck(), context);
               }),

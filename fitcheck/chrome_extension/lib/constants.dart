@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-const web_url = "fitcheck.ml"; // "localhost:3000";
-const api_url = web_url; // "localhost:8000";
+const prod_mode = false;
+const web_url = prod_mode ? "fitcheck.ml" : "localhost:3000";
+const api_url = prod_mode ? web_url : "localhost:8000";
 var api_token = "";
 
 const pink = Color(0xFFFE9EB9);

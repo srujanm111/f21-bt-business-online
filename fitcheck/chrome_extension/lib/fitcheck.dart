@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'main.dart';
+
 // hardcoded examples for demo purposes (only one links back to the store page)
 List<ClothingItem> localItems = [
   // ClothingItem("https://m.media-amazon.com/images/I/91tCUunPF7L._AC_UL640_FMwebp_QL65_.jpg", "", "Levi's Regular Fit Jeans", 34.99),
@@ -68,17 +70,27 @@ class _AddItemState extends State<AddItem> {
   // String? pageUrl =
   //     "https://www.amazon.com/Nautica-Sleeve-Stretch-Cotton-X-Large/dp/B07BN2731K/ref=sr_1_7?keywords=Nautica+Soft+Cotton+Polo&qid=1638555173&sr=8-7";
 
+  final channel = BroadcastChannel('images');
+
   @override
   void initState() {
     super.initState();
 
-    final channel = BroadcastChannel('images');
-    channel.onMessage.listen((event) {
+    this.channel.onMessage.listen((event) {
       setState(() {
         imageUrl = event.data['imageUrl'];
         pageUrl = event.data['pageUrl'];
       });
     });
+
+    WidgetsBinding.instance!
+        .addPostFrameCallback((_) => this.checkLastItem(context));
+  }
+
+  void checkLastItem(BuildContext context) {
+    this
+        .channel
+        .postMessage(jsonEncode({"action": "request", "value": "latest"}));
   }
 
   @override
@@ -162,7 +174,6 @@ class _AddItemState extends State<AddItem> {
   }
 
   _addItemToBackend(ClothingItem item, Function(bool) next) async {
-    // TODO add clothing item to backend database
     // js.context.callMethod('alert', ["trace - add item to backend"]);
 
     final response =

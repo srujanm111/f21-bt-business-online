@@ -321,7 +321,7 @@ function web_routing() {
             return web_return_data(req, res, { username: req.user.username });
         });
     });
-    express_api.get("/api/auth_alt", (req, res) => {
+    express_api.post("/api/auth_alt", (req, res) => {
         // authenticate token
         req.user = web_verify_token(req.body.token);
         if (req.user == null) return web_return_error(req, res, 401, "Unauthorized");
