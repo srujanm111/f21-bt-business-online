@@ -72,58 +72,61 @@ div.newOutfitButton:hover {
 }
 
 .fitsMoreButton {
-    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
     transition: opacity 0.3s ease, border-radius 0.3s ease;
 }
 .fitsMoreButtonState1 {
-    opacity: 0.65;
+    opacity: 0.95;
     border-radius: 30%;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
 }
 .fitsMoreButtonState1:hover {
-    opacity: 0.95;
+    opacity: 0.65;
 }
 .fitsMoreButtonState2 {
     border-radius: 28% 28% 0 0;
-    opacity: 0.75;
+    opacity: 0.95;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.06);
 }
 .fitsMoreButtonState2:hover {
-    opacity: 0.95;
+    opacity: 0.75;
 }
 
 .fitsEditButton {
-    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
     transition: opacity 0.3s ease;
 }
 .fitsEditButtonState1 {
     opacity: 0;
     pointer-events: none;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.16);
 }
 .fitsEditButtonState1:hover {
     opacity: 0;
 }
 .fitsEditButtonState2 {
-    opacity: 0.75;
+    opacity: 0.95;
     pointer-events: auto;
+    box-shadow: 0 0 2px 1px rgba(10, 7, 7, 0.01);
 }
 .fitsEditButtonState2:hover {
-    opacity: 0.95;
+    opacity: 0.75;
 }
 
 .fitsDeleteButton {
-    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
     transition: opacity 0.3s ease;
 }
 .fitsDeleteButtonState1 {
     opacity: 0;
     pointer-events: none;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.16);
 }
 .fitsDeleteButtonState1:hover {
     opacity: 0;
 }
 .fitsDeleteButtonState2 {
-    opacity: 0.75;
+    opacity: 0.95;
     pointer-events: auto;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.01);
 }
 .fitsDeleteButtonState2:hover {
-    opacity: 0.95;
+    opacity: 0.75;
 }

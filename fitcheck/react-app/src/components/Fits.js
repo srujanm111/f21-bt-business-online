@@ -172,7 +172,7 @@ class Fits extends React.Component {
     }
 
     deleteOutfit(id, name) {
-        if (window.confirm(`Are you sure you want to permanently DELETE your masterpiece "${name}"?`)) {
+        if (window.confirm(`Permanently DELETE masterpiece "${name}"?`)) {
             axios.post(`${global.config.api_url}/delete_outfit`, {
                 outfit: id.toString(),
             }, {
@@ -217,13 +217,13 @@ class Fits extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div style={{ position: 'absolute', top: '25px', right: '-6px', width: '28px', height: '60px', zIndex: '20', display: 'block' /* (this.state.menuShowing == outfit.id ? 'block' : 'none') */ }}>
-                                <div className={"fitsEditButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsEditButtonState2' : 'fitsEditButtonState1')} onClick={_ => { this.editOutfit(outfit.id); }} style={{ width: '100%', height: '49%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, borderRadius: '0', cursor: 'pointer', position: 'absolute', top: '0', right: '0' }}>
+                            <div style={{ position: 'absolute', top: '25px', right: '-6px', width: '28px', height: '64px', zIndex: '20', display: 'block' /* (this.state.menuShowing == outfit.id ? 'block' : 'none') */ }}>
+                                <div className={"fitsEditButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsEditButtonState2' : 'fitsEditButtonState1')} onClick={_ => { this.editOutfit(outfit.id); }} style={{ width: '100%', height: '50%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, borderRadius: '0', cursor: 'pointer', position: 'absolute', top: '0', right: '0' }}>
                                     <div className="block_content" style={{ opacity: '1' }}>
                                         <EditIcon fontSize="small" style={{ cursor: 'pointer', fill: 'white' }}></EditIcon>
                                     </div>
                                 </div>
-                                <div className={"fitsDeleteButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsDeleteButtonState2' : 'fitsDeleteButtonState1')} onClick={_ => { this.deleteOutfit(outfit.id, outfit.name); }} style={{ width: '100%', height: '51%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, borderRadius: '0 0 28% 28%', cursor: 'pointer', position: 'absolute', top: '28px', right: '0' }}>
+                                <div className={"fitsDeleteButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsDeleteButtonState2' : 'fitsDeleteButtonState1')} onClick={_ => { this.deleteOutfit(outfit.id, outfit.name); }} style={{ width: '100%', height: '50%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, borderRadius: '0 0 28% 28%', cursor: 'pointer', position: 'absolute', top: '28px', right: '0' }}>
                                     <div className="block_content" style={{ opacity: '1' }}>
                                         <DeleteIcon fontSize="small" style={{ cursor: 'pointer', fill: 'white' }}></DeleteIcon>
                                     </div>
