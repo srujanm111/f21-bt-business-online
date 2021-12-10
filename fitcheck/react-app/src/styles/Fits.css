@@ -70,3 +70,60 @@ div.newOutfitButton {
 div.newOutfitButton:hover {
     background-color: #fafafa;
 }
+
+.fitsMoreButton {
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
+    transition: opacity 0.3s ease, border-radius 0.3s ease;
+}
+.fitsMoreButtonState1 {
+    opacity: 0.65;
+    border-radius: 30%;
+}
+.fitsMoreButtonState1:hover {
+    opacity: 0.95;
+}
+.fitsMoreButtonState2 {
+    border-radius: 28% 28% 0 0;
+    opacity: 0.75;
+}
+.fitsMoreButtonState2:hover {
+    opacity: 0.95;
+}
+
+.fitsEditButton {
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
+    transition: opacity 0.3s ease;
+}
+.fitsEditButtonState1 {
+    opacity: 0;
+    pointer-events: none;
+}
+.fitsEditButtonState1:hover {
+    opacity: 0;
+}
+.fitsEditButtonState2 {
+    opacity: 0.75;
+    pointer-events: auto;
+}
+.fitsEditButtonState2:hover {
+    opacity: 0.95;
+}
+
+.fitsDeleteButton {
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.16);
+    transition: opacity 0.3s ease;
+}
+.fitsDeleteButtonState1 {
+    opacity: 0;
+    pointer-events: none;
+}
+.fitsDeleteButtonState1:hover {
+    opacity: 0;
+}
+.fitsDeleteButtonState2 {
+    opacity: 0.75;
+    pointer-events: auto;
+}
+.fitsDeleteButtonState2:hover {
+    opacity: 0.95;
+}

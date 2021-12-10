@@ -124,6 +124,17 @@ function db_get_outfit(user_id, outfit_id, resolve) {
         } else resolve(outfit);
     });
 }
+// star outfit
+function db_star_outfit(id, starred, resolve) {
+    mongo_api.collection('outfit').updateOne({
+        _id: mongodb.ObjectId(id)
+    }, { $set: { starred: starred } }, (e, result1) => {
+        if (e) {
+            console.err("[db]", `error starring outfit ${id} as ${starred}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, result1);
+    });
+}
 // delete outfit
 function db_delete_outfit(id, resolve) {
     mongo_api.collection('outfit').deleteOne({
@@ -392,6 +403,32 @@ function web_routing() {
                         starred: outfit.starred
                     }
                 });
+            });
+        });
+    });
+    // star outfit
+    express_api.post("/api/star_outfit", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // star outfit
+            db_star_outfit(req.body.outfit, req.body.starred == true, (starred) => {
+                if (starred === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, {});
+            });
+        });
+    });
+    // delete outfit
+    express_api.post("/api/delete_outfit", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // delete outfit
+            db_delete_outfit(req.body.outfit, (deleted) => {
+                if (deleted === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, {});
             });
         });
     });

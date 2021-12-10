@@ -12,6 +12,10 @@ import outfit4 from '../assets/outfit4.svg';
 import '../styles/Fits.css';
 import PropTypes from "prop-types";
 
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 class Fits extends React.Component {
 
     static propTypes = {
@@ -27,7 +31,8 @@ class Fits extends React.Component {
             url3: '',
             wardrobeItems: [],
             outfitList: [],
-            outfitHeight: 601
+            outfitHeight: 601,
+            menuShowing: null
         };
     }
 
@@ -114,6 +119,86 @@ class Fits extends React.Component {
         return null;
     }
 
+    showMenu(id) {
+        if (this.state.menuShowing == id) {
+            this.setState({
+                menuShowing: null
+            });
+        } else
+            this.setState({
+                menuShowing: id
+            });
+    }
+
+    editOutfit(id) {
+        console.log(`editing outfit ${id}`);
+    }
+
+    getOutfitIndexById(id) {
+        for (var o_l in this.state.outfitList) {
+            if (this.state.outfitList[o_l].id == id)
+                return o_l;
+        }
+        return null;
+    }
+
+    toggleStarOutfit(id, starred) {
+        starred = !starred;
+        axios.post(`${global.config.api_url}/star_outfit`, {
+            outfit: id.toString(),
+            starred: starred
+        }, {
+            headers: global.util.generate_auth_headers(global.api.get_token())
+        }).then(response => {
+            if (response && response.data) {
+                console.log(response.data);
+                var index_to_update = this.getOutfitIndexById(id);
+                if (index_to_update !== null) {
+                    this.state.outfitList[index_to_update].starred = starred;
+                    this.setState({
+                        outfitList: this.state.outfitList
+                    });
+                }
+            } else {
+                console.error(response);
+            }
+        }).catch(error => {
+            console.error(error);
+            if (error && error.response && error.response.data && error.response.data.hasOwnProperty('message')) {
+                console.error(error.response.data.message);
+            }
+        });
+    }
+
+    deleteOutfit(id, name) {
+        if (window.confirm(`Are you sure you want to permanently DELETE your masterpiece "${name}"?`)) {
+            axios.post(`${global.config.api_url}/delete_outfit`, {
+                outfit: id.toString(),
+            }, {
+                headers: global.util.generate_auth_headers(global.api.get_token())
+            }).then(response => {
+                if (response && response.data) {
+                    console.log(response.data);
+                    // this.setState({ outfitList: response.data.list });
+                    var index_to_remove = this.getOutfitIndexById(id);
+                    if (index_to_remove !== null) {
+                        this.state.outfitList.splice(index_to_remove, 1);
+                        this.setState({
+                            outfitList: this.state.outfitList
+                        });
+                    }
+                } else {
+                    console.error(response);
+                }
+            }).catch(error => {
+                console.error(error);
+                if (error && error.response && error.response.data && error.response.data.hasOwnProperty('message')) {
+                    console.error(error.response.data.message);
+                }
+            });
+        }
+    }
+
     render() {
         return (
 
@@ -124,12 +209,32 @@ class Fits extends React.Component {
                     var outfit = this.state.outfitList[o_l];
                     return (
                         <div key={o_l.toString()} style={{ height: '700px', width: '290px', backgroundColor: '#eee', marginTop: '30px', marginBottom: '10px', marginLeft: '50px', borderRadius: '12px', position: 'relative', boxShadow: "0 3px 6px 2px rgba(0, 0, 0, 0.07)", display: 'inline-block' }}>
-                            <div className="block_wrap" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '50px', borderBottom: '1px solid #e4e4e4' }}>
-                                <div style={{ position: 'absolute', cursor: 'pointer', top: '14px', left: '20px', width: '25px', height: '25px', backgroundImage: `url(/${(!outfit.starred ? 'heart_clear' : 'heart')}.png)`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', opacity: '0.9', cursor: 'pointer' }}></div>
-                                <div className="block_content" style={{ textAlign: 'left', boxSixing: 'border-box', paddingLeft: '60px' }}><b style={{ fontSize: '21px', color: 'black' }}>{outfit.name}</b></div>
-                                <div style={{ position: 'absolute', top: '12px', right: '50px', width: '25px', height: '25px', color: '#111' }}>
-                                    <b>${outfit.price_total.toFixed(2)}</b>
+                            <div style={{ position: 'absolute', top: '-3.5px', right: '-6px', width: '28px', height: '28px', zIndex: '20' }}>
+                                <div className={"fitsMoreButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsMoreButtonState2' : 'fitsMoreButtonState1')} style={{ width: '100%', height: '100%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, cursor: 'pointer' }} onClick={_ => { this.showMenu(outfit.id); }}>
+                                    <div className="block_content" style={{ opacity: '1' }}>
+                                        <MoreVertIcon fontSize="small" style={{ cursor: 'pointer', fill: 'white' }}></MoreVertIcon>
+                                    </div>
                                 </div>
+                            </div>
+                            <div style={{ position: 'absolute', top: '25px', right: '-6px', width: '28px', height: '60px', zIndex: '20', display: 'block' /* (this.state.menuShowing == outfit.id ? 'block' : 'none') */ }}>
+                                <div className={"fitsEditButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsEditButtonState2' : 'fitsEditButtonState1')} onClick={_ => { this.editOutfit(outfit.id); }} style={{ width: '100%', height: '49%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, borderRadius: '0', cursor: 'pointer', position: 'absolute', top: '0', right: '0' }}>
+                                    <div className="block_content" style={{ opacity: '1' }}>
+                                        <EditIcon fontSize="small" style={{ cursor: 'pointer', fill: 'white' }}></EditIcon>
+                                    </div>
+                                </div>
+                                <div className={"fitsDeleteButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsDeleteButtonState2' : 'fitsDeleteButtonState1')} onClick={_ => { this.deleteOutfit(outfit.id, outfit.name); }} style={{ width: '100%', height: '51%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, borderRadius: '0 0 28% 28%', cursor: 'pointer', position: 'absolute', top: '28px', right: '0' }}>
+                                    <div className="block_content" style={{ opacity: '1' }}>
+                                        <DeleteIcon fontSize="small" style={{ cursor: 'pointer', fill: 'white' }}></DeleteIcon>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="block_wrap" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '50px', borderBottom: '1px solid #e4e4e4' }}>
+                                <div onClick={_ => { this.toggleStarOutfit(outfit.id, outfit.starred); }} style={{ position: 'absolute', cursor: 'pointer', top: '16px', left: '20px', width: '20px', height: '20px', backgroundImage: `url(/${(!outfit.starred ? 'heart_clear' : 'heart')}.png)`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', opacity: '0.9', cursor: 'pointer' }}></div>
+                                <div className="block_content" style={{ textAlign: 'left', boxSixing: 'border-box', paddingLeft: '58px' }}><b style={{ fontSize: '17.5px', color: 'black' }}>{outfit.name}</b></div>
+                                <div style={{ position: 'absolute', top: '9px', right: '77px', width: '25px', height: '25px', color: '#111' }}>
+                                    <b style={{ fontSize: '19px' }}>${outfit.price_total.toFixed(2)}</b>
+                                </div>
+                                {/* <div style={{ opacity: '0.8', position: 'absolute', top: '13px', left: '12px', width: '25px', height: '25px', color: '#111' }}></div> */}
                             </div>
                             <div style={{ height: (this.state.outfitHeight + 'px'), position: 'absolute', top: '50px', left: '0', width: '100%' }}>
                                 {Object.keys(outfit.clothes).map((c) => {
