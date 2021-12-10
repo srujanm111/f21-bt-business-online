@@ -35,7 +35,7 @@ class _StartupState extends State<Startup> {
       appBar: CustomTabBar(
         tabs: [
           TabItem("Sign Up", () => tabViewKey.currentState?.changePage(0)),
-          TabItem("Log In", () => tabViewKey.currentState?.changePage(1)),
+          TabItem("Sign In", () => tabViewKey.currentState?.changePage(1)),
         ],
       ),
       body: CustomTabBarView(
@@ -195,6 +195,7 @@ class _LogInState extends State<LogIn> {
             child: CustomTextField(
               hint: 'Username',
               controller: usernameController,
+              borderLighterToggle: true,
             ),
           ),
           SizedBox(height: 10),
@@ -222,7 +223,7 @@ class _LogInState extends State<LogIn> {
           ),
           Spacer(),
           RoundButton(
-              text: "Login",
+              text: "Sign In",
               onPress: () {
                 final username = usernameController.text;
                 final password = passwordController.text;

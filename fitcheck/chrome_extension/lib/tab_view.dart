@@ -54,9 +54,13 @@ class _CustomTabBarState extends State<CustomTabBar> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(width: 0.85, color: border),
-                  left: BorderSide(width: 0.5, color: border),
-                  right: BorderSide(width: 0.5, color: border),
+                  top: BorderSide(width: 0.85, color: white),
+                  left: BorderSide(
+                      width: 0.5,
+                      color: (widget.tabs.indexOf(item) == 1 ? border : white)),
+                  right: BorderSide(
+                      width: 0.5,
+                      color: (widget.tabs.indexOf(item) == 1 ? white : border)),
                   bottom: BorderSide(width: 1.25, color: border),
                 ),
               ),

@@ -34,21 +34,23 @@ class FitCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
-      appBar: CustomTabBar(
-        tabs: [
-          TabItem("Add Item", () => tabViewKey.currentState?.changePage(0)),
-          TabItem("Wardrobe", () => tabViewKey.currentState?.changePage(1)),
-        ],
-      ),
-      body: CustomTabBarView(
-        key: tabViewKey,
-        pages: [
-          AddItem(),
-          Wardrobe(),
-        ],
-      ),
-    );
+        backgroundColor: white,
+        appBar: CustomTabBar(
+          tabs: [
+            TabItem("Add Item", () => tabViewKey.currentState?.changePage(0)),
+            TabItem("Wardrobe", () => tabViewKey.currentState?.changePage(1)),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 2),
+          child: CustomTabBarView(
+            key: tabViewKey,
+            pages: [
+              AddItem(),
+              Wardrobe(),
+            ],
+          ),
+        ));
   }
 }
 
@@ -126,7 +128,7 @@ class _AddItemState extends State<AddItem> {
             height: 280,
             width: 330,
             decoration: BoxDecoration(
-              border: Border.all(color: green, width: 8),
+              border: Border.all(color: white, width: 2),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Center(
@@ -137,7 +139,11 @@ class _AddItemState extends State<AddItem> {
             ),
           ),
           SizedBox(height: 10),
-          CustomTextField(hint: "Name", controller: nameController),
+          CustomTextField(
+            hint: "Name",
+            controller: nameController,
+            borderLighterToggle: true,
+          ),
           SizedBox(height: 10),
           CustomTextField(hint: "Price", controller: priceController),
           Spacer(),
@@ -265,7 +271,8 @@ class _WardrobeState extends State<Wardrobe> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding:
+          const EdgeInsets.only(top: 15.0, left: 5.0, right: 5.0, bottom: 12.0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -280,7 +287,7 @@ class _WardrobeState extends State<Wardrobe> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    width: 8,
+                    width: 7,
                     color: green,
                   ),
                   borderRadius: BorderRadius.circular(10),
@@ -288,12 +295,16 @@ class _WardrobeState extends State<Wardrobe> {
                 child: Stack(
                   children: [
                     Align(
-                        alignment: Alignment.center,
-                        child: Image.network(item.imageUrl)),
+                      alignment: Alignment.center,
+                      child: FittedBox(
+                        child: Image.network(item.imageUrl),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     Align(
                         alignment: Alignment.topRight,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 8, right: 8),
+                          padding: const EdgeInsets.only(top: 5, right: 6),
                           child: Container(
                             decoration: BoxDecoration(
                               color: pink,
@@ -301,11 +312,11 @@ class _WardrobeState extends State<Wardrobe> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                  left: 8, right: 8, bottom: 8, top: 2),
+                                  left: 7, right: 6, bottom: 5, top: 4),
                               child: CustomText(
-                                text: item.price.toString(),
+                                text: "\$" + item.price.toStringAsFixed(2),
                                 color: white,
-                                size: 16,
+                                size: 15,
                               ),
                             ),
                           ),

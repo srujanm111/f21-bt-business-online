@@ -103,12 +103,14 @@ class CustomTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final bool hidden;
+  final bool borderLighterToggle;
 
   const CustomTextField({
     Key? key,
     required this.hint,
     required this.controller,
     this.hidden = false,
+    this.borderLighterToggle = false,
   }) : super(key: key);
 
   @override
@@ -136,11 +138,16 @@ class CustomTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: pink, width: 1.5),
+          borderSide: BorderSide(
+              color: pink, width: (this.borderLighterToggle ? 1.2 : 1.5)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: borderDarker, width: 1.5),
+          borderSide: BorderSide(
+              color: this.borderLighterToggle
+                  ? borderLighter
+                  : border /* borderDarker */,
+              width: this.borderLighterToggle ? 1.2 : 1.5),
         ),
       ),
       validator: (String? value) {
