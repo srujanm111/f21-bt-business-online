@@ -132,6 +132,7 @@ class Fits extends React.Component {
 
     editOutfit(id) {
         console.log(`editing outfit ${id}`);
+        window.location = (`/create/?edit=${id}`);
     }
 
     getOutfitIndexById(id) {

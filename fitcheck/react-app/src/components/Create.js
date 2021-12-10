@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import '../styles/Create.css';
 import PropTypes from "prop-types";
 import { Alert } from 'react-bootstrap';
+import queryString from 'query-string';
 
 class Create extends React.Component {
 
@@ -20,7 +21,9 @@ class Create extends React.Component {
             items: [],
             outfitItems: [],
             lastAddedItem: null,
-            priceTotal: 0
+            priceTotal: 0,
+            editingOutfitId: null,
+            editingOutfitName: "",
         };
         this.lastAddedItemRef = React.createRef()
     }
@@ -36,12 +39,48 @@ class Create extends React.Component {
     }
 
     setupPage() {
+        var newEditingOutfitId = null;
+        let params = queryString.parse(this.props.location.search);
+        if (params['edit'] && (`${params['edit']}`).trim().length == 24) {
+            newEditingOutfitId = (`${params['edit']}`).trim();
+        }
         axios.post(`${global.config.api_url}/get_clothing`, {
             token: `${global.api.get_token()}`,
         }).then(response => {
             if (response && response.data && response.data.hasOwnProperty('list')) {
                 console.log(response.data.list);
                 this.setState({ items: response.data.list });
+                if (newEditingOutfitId) {
+                    axios.post(`${global.config.api_url}/get_outfit`, {
+                        outfit_id: `${newEditingOutfitId}`,
+                    }, {
+                        headers: global.util.generate_auth_headers(global.api.get_token())
+                    }).then(response2 => {
+                        if (response2 && response2.data && response2.data.hasOwnProperty('outfit')) {
+                            console.log(response2.data.outfit);
+                            this.state.outfitItems = [];
+                            for (var c in response2.data.outfit.clothes) {
+                                var clothing_item = this.getItemById(response2.data.outfit.clothes[c]);
+                                // console.log(clothing_item);
+                                if (clothing_item != null)
+                                    this.state.outfitItems.push(clothing_item);
+                            }
+                            this.setState({
+                                editingOutfitName: response2.data.outfit.name,
+                                editingOutfitId: newEditingOutfitId,
+                                outfitItems: this.state.outfitItems,
+                            });
+                            this.updatePriceTotal();
+                        } else {
+                            console.error(response2);
+                        }
+                    }).catch(error => {
+                        console.error(error);
+                        if (error && error.response && error.response.data && error.response.data.hasOwnProperty('message')) {
+                            console.error(error.response.data.message);
+                        }
+                    });
+                }
             } else {
                 console.error(response);
             }
@@ -51,6 +90,14 @@ class Create extends React.Component {
                 console.error(error.response.data.message);
             }
         });
+    }
+
+    getItemById(id) {
+        for (var i in this.state.items) {
+            if (this.state.items[i].id == id)
+                return this.state.items[i];
+        }
+        return null;
     }
 
     selectItem(i) {
@@ -95,8 +142,9 @@ class Create extends React.Component {
 
     saveOutfit() {
         if (this.state.outfitItems.length > 0) {
-            if (window.confirm(`Price: $${this.state.priceTotal.toFixed(2)}. Save outfit?`)) {
-                var name = window.prompt("Outfit Name: ");
+            var name = this.state.editingOutfitName ? this.state.editingOutfitName : null;
+            if (window.confirm(`Price: $${this.state.priceTotal.toFixed(2)}. Save outfit${this.state.editingOutfitId == null ? "" : " \"" + this.state.editingOutfitName + "\""}?`)) {
+                if (name == null) name = window.prompt("Outfit Name: ");
                 // console.log(name);
                 this.requestSaveOutfit(name, this.state.priceTotal, this.extractItemIds(this.state.outfitItems));
             }
@@ -113,17 +161,22 @@ class Create extends React.Component {
 
     requestSaveOutfit(name, price_total, items) {
         console.log(items);
-        axios.post(`${global.config.api_url}/create_outfit`, {
+        var action = this.state.editingOutfitId == null ? 'create' : 'update';
+        var req_body = {
             name: name,
             price_total: price_total,
             item_list: items
-        }, {
+        };
+        if (this.state.editingOutfitId != null && this.state.editingOutfitId.trim().length == 24) {
+            req_body['outfit_id'] = this.state.editingOutfitId;
+        }
+        axios.post(`${global.config.api_url}/${action}_outfit`, req_body, {
             headers: global.util.generate_auth_headers(global.api.get_token())
         }).then(response => {
             if (response && response.data && response.data.hasOwnProperty('id')) {
                 console.log(response.data.id);
-                window.alert(`Outfit "${name}" created!`);
-                this.clearAll();
+                window.alert(`Outfit "${name}" ${action}d!`);
+                if (action == "create") this.clearAll();
             } else {
                 console.error(response);
             }
@@ -164,9 +217,16 @@ class Create extends React.Component {
                             </div>);
                         })}
                     </div>
+                    <div className="block_wrap" style={{ position: 'absolute', top: '0', left: '0', width: 'auto', height: '50px', backgroundColor: 'white', borderBottom: '2px solid #f4f4f4', borderRight: '2px solid #f4f4f4', borderTop: 'none', borderLeft: 'none', borderRadius: '0 0 7px 0' }}>
+                        <div className="block_content">
+                            <span style={{ opacity: (this.state.outfitItems.length < 1 ? '0.82' : '0.96'), padding: '0 20px' }}>
+                                <b>{this.state.editingOutfitId == null ? "untitled" : this.state.editingOutfitName}</b>
+                            </span>
+                        </div>
+                    </div>
                     <div className="block_wrap" style={{ position: 'absolute', bottom: '110px', right: '20px', width: '120px', height: '50px', backgroundColor: 'white', borderTop: '2px solid #f4f4f4', borderLeft: '2px solid #f4f4f4', borderRight: 'none', borderBottom: 'none', borderRadius: '7px 0 0 0' }}>
                         <div className="block_content">
-                            <span style={{ opacity: (this.state.outfitItems.length < 1 ? '0.85' : '0.96') }}>
+                            <span style={{ opacity: (this.state.outfitItems.length < 1 ? '0.82' : '0.96') }}>
                                 <b>${this.state.priceTotal.toFixed(2)}</b>
                             </span>
                         </div>
@@ -176,7 +236,7 @@ class Create extends React.Component {
                         <div className="block_content" style={{ margin: '0 auto', width: '350px', marginRight: '15px' }}>
                             <div style={{ width: '170px', height: '70px', display: 'inline-block' }}>
                                 <button className="saveOutfitButton" onClick={_ => { this.saveOutfit(); }}>
-                                    <b>save outfit</b>
+                                    <b>{this.state.editingOutfitId == null ? "save" : "update"} outfit</b>
                                 </button>
                             </div>
                             <div style={{ width: '170px', height: '70px', display: 'inline-block', marginLeft: '15px' }}>

@@ -148,11 +148,12 @@ global.util = {
     generate_auth_headers: (token) => {
         return { Authorization: `Bearer ${token}` };
     },
+    // append period to end of string (if missing)
     append_period: message => {
         message = `${message}`;
         if (message[message.length - 1] != '.')
             message = `${message}.`;
         return message;
-    }
+    },
 };
 

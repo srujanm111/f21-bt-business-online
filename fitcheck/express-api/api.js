@@ -90,7 +90,6 @@ function db_create_outfit(user_id, name, price_total, item_list, resolve) {
     mongo_api.collection('outfit').insertOne({
         name: name,
         price_total: price_total,
-        clothes: [],
         user: user_id,
         clothes: item_list,
         starred: false
@@ -99,6 +98,24 @@ function db_create_outfit(user_id, name, price_total, item_list, resolve) {
             console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
             resolve(false, e);
         } else resolve(result1.insertedId, result1);
+    });
+}
+// update existing outfit
+function db_update_outfit(outfit_id, user_id, name, price_total, item_list, resolve) {
+    mongo_api.collection('outfit').updateOne({
+        _id: mongodb.ObjectId(outfit_id),
+        user: user_id,
+    }, {
+        $set: {
+            name: name,
+            price_total: price_total,
+            clothes: item_list,
+        }
+    }, (e, result1) => {
+        if (e) {
+            console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(outfit_id, result1);
     });
 }
 // get outfits
@@ -354,6 +371,19 @@ function web_routing() {
             if (user === null) return web_return_error(req, res, 400, "User not found");
             // create outfit
             db_create_outfit(user._id.toString(), req.body.name, parseFloat(req.body.price_total), req.body.item_list, (outfit_id) => {
+                if (outfit_id === false) return web_return_error(req, res, 500, "Database error");
+                return web_return_data(req, res, { id: outfit_id.toString() });
+            });
+        });
+    });
+    // update outfit
+    express_api.post("/api/update_outfit", web_require_token(), (req, res) => {
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // update outfit
+            db_update_outfit(req.body.outfit_id, user._id.toString(), req.body.name, parseFloat(req.body.price_total), req.body.item_list, (outfit_id) => {
                 if (outfit_id === false) return web_return_error(req, res, 500, "Database error");
                 return web_return_data(req, res, { id: outfit_id.toString() });
             });
