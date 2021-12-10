@@ -20,6 +20,7 @@ class Create extends React.Component {
         this.state = {
             items: [],
             outfitItems: [],
+            outfitItemsCache: [],
             lastAddedItem: null,
             priceTotal: 0,
             editingOutfitId: null,
@@ -69,6 +70,7 @@ class Create extends React.Component {
                                 editingOutfitName: response2.data.outfit.name,
                                 editingOutfitId: newEditingOutfitId,
                                 outfitItems: this.state.outfitItems,
+                                outfitItemsCache: JSON.parse(JSON.stringify(this.state.outfitItems))
                             });
                             this.updatePriceTotal();
                         } else {
@@ -179,6 +181,9 @@ class Create extends React.Component {
         }).then(response => {
             if (response && response.data && response.data.hasOwnProperty('id')) {
                 console.log(response.data.id);
+                this.setState({
+                    outfitItemsCache: JSON.parse(JSON.stringify(this.state.outfitItems))
+                });
                 window.alert(`Outfit "${name}" ${action}d!`);
                 if (action == "create") {
                     // this.clearAll();
@@ -198,19 +203,29 @@ class Create extends React.Component {
     }
 
     clearAll() {
-        if (this.state.outfitItems.length > 0 && window.confirm(`Clear ${this.state.outfitItems.length} item${this.state.outfitItems.length > 1 ? 's' : ''} without updating fit?`)) {
-            this.setState({
-                outfitItems: [],
-                lastAddedItem: null,
-                priceTotal: 0
-            });
+        if (this.state.outfitItems.length > 0 && window.confirm(`Abandon new${(this.state.editingOutfitId == null ? ' ' : ' changes to ')}fit?`)) {
+            if (this.state.editingOutfitId != null) {
+                console.log(this.state.outfitItemsCache);
+                this.state.outfitItems = JSON.parse(JSON.stringify(this.state.outfitItemsCache));
+                this.setState({
+                    outfitItems: this.state.outfitItems,
+                    lastAddedItem: null,
+                });
+                this.updatePriceTotal();
+            } else {
+                this.setState({
+                    outfitItems: [],
+                    lastAddedItem: null,
+                    priceTotal: 0
+                });
+            }
+            // if (this.state.editingOutfitId != null && window.confirm("Exit without saving?")) {
+            //     window.location = ('/create');
+            // }
         }
     }
 
     newOutfit() {
-        if (this.state.editingOutfitId == null || window.confirm("Abandon new changes to your fit?")) {
-            window.location = ('/create');
-        }
     }
 
     scrollToLastAddedItem() {
@@ -251,19 +266,14 @@ class Create extends React.Component {
                     <br />
                     <div className="block_wrap" style={{ position: 'absolute', left: '0', bottom: '5px', width: '100%', height: '95px', paddingRight: '24px', boxSizing: 'border-box' }}>
                         <div className="block_content" style={{ margin: '0 auto', width: '350px', marginRight: '15px' }}>
-                            <div style={{ width: '170px', height: '70px', display: 'inline-block', marginRight: '15px' }}>
-                                <button className="clearAllButton" onClick={_ => { this.clearAll(); }}>
-                                    <b>clear fit</b>
-                                </button>
-                            </div>
-                            <div style={{ width: '170px', height: '70px', display: 'inline-block' }}>
+                            <div style={{ width: '170px', height: '70px', display: 'inline-block', marginRight: '8px' }}>
                                 <button className="saveOutfitButton" onClick={_ => { this.saveOutfit(); }}>
                                     <b>{this.state.editingOutfitId == null ? "save" : "update"} fit</b>
                                 </button>
                             </div>
-                            <div style={{ marginLeft: '15px', width: '170px', height: '70px', display: (this.state.editingOutfitId == null ? 'none' : 'inline-block') }}>
-                                <button className="newOutfitButton" onClick={_ => { this.newOutfit(); }}>
-                                    <b>new fit</b>
+                            <div style={{ width: '170px', height: '70px', display: 'inline-block', marginLeft: '8px' }}>
+                                <button className="clearAllButton" onClick={_ => { this.clearAll(); }}>
+                                    <b>clear fit</b>
                                 </button>
                             </div>
                         </div>
