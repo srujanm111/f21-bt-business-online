@@ -52,7 +52,7 @@ class Fits extends React.Component {
         }).then(response => {
             if (response && response.data && response.data.hasOwnProperty('list')) {
                 console.log(response.data.list);
-                this.setState({ wardrobeItems: response.data.list });
+                this.setState({ wardrobeItems: response.data.list.sort(this.itemSort) });
                 axios.post(`${global.config.api_url}/get_outfits`, {
                     include_clothes: true,
                 }, {
@@ -60,7 +60,7 @@ class Fits extends React.Component {
                 }).then(response2 => {
                     if (response2 && response2.data && response2.data.hasOwnProperty('list')) {
                         console.log(response2.data.list);
-                        this.setState({ outfitList: response2.data.list });
+                        this.setState({ outfitList: response2.data.list.sort(this.outfitSort) });
                     } else {
                         console.error(response2);
                     }
@@ -169,6 +169,14 @@ class Fits extends React.Component {
                 console.error(error.response.data.message);
             }
         });
+    }
+
+    itemSort(a, b) {
+        return b.ts_updated - a.ts_updated;
+    }
+
+    outfitSort(a, b) {
+        return b.ts_updated - a.ts_updated;
     }
 
     deleteOutfit(id, name) {

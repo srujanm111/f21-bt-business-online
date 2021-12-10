@@ -181,7 +181,7 @@ class Create extends React.Component {
                 console.log(response.data.id);
                 window.alert(`Outfit "${name}" ${action}d!`);
                 if (action == "create") {
-                    this.clearAll();
+                    // this.clearAll();
                     setTimeout(_ => {
                         window.location = (`/create/?edit=${response.data.id.toString()}`);
                     }, 50);
@@ -198,7 +198,7 @@ class Create extends React.Component {
     }
 
     clearAll() {
-        if ((this.state.outfitItems.length > 0 || this.state.lastAddedItem != null) && window.confirm(`Clear ${this.state.outfitItems.length} item${this.state.outfitItems.length > 1 ? 's' : ''} without updating fit?`)) {
+        if (this.state.outfitItems.length > 0 && window.confirm(`Clear ${this.state.outfitItems.length} item${this.state.outfitItems.length > 1 ? 's' : ''} without updating fit?`)) {
             this.setState({
                 outfitItems: [],
                 lastAddedItem: null,
