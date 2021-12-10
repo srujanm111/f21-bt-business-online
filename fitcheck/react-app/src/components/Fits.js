@@ -208,7 +208,7 @@ class Fits extends React.Component {
                     // console.log(this.state.items[i]);
                     var outfit = this.state.outfitList[o_l];
                     return (
-                        <div key={o_l.toString()} style={{ height: '700px', width: '290px', backgroundColor: '#eee', marginTop: '30px', marginBottom: '10px', marginLeft: '50px', borderRadius: '12px', position: 'relative', boxShadow: "0 3px 6px 2px rgba(0, 0, 0, 0.07)", display: 'inline-block' }}>
+                        <div key={o_l.toString()} style={{ height: '700px', width: '290px', backgroundColor: '#eee', marginTop: '30px', marginBottom: '10px', marginLeft: '50px', borderRadius: '12px', position: 'relative', boxShadow: "0 3px 6px 2px rgba(0, 0, 0, 0.07)", display: 'inline-block', float: 'left' }}>
                             <div style={{ position: 'absolute', top: '-3.5px', right: '-6px', width: '28px', height: '28px', zIndex: '20' }}>
                                 <div className={"fitsMoreButton block_wrap " + (this.state.menuShowing == outfit.id ? 'fitsMoreButtonState2' : 'fitsMoreButtonState1')} style={{ width: '100%', height: '100%', backgroundColor: '#fe9eb9' /* #f4f4f4 */, cursor: 'pointer' }} onClick={_ => { this.showMenu(outfit.id); }}>
                                     <div className="block_content" style={{ opacity: '1' }}>
