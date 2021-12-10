@@ -227,7 +227,7 @@ function web_issue_token(username) {
     return jwt.sign(
         { username: (`${username}`).trim() },
         global.config.jwt.secret,
-        { algorithm: global.config.jwt.algo }
+        { algorithm: global.config.jwt.algo, expiresIn: global.config.jwt.expiration }
     );
 }
 // verify auth token

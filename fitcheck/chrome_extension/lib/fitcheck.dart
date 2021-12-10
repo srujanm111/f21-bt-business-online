@@ -100,7 +100,7 @@ class _AddItemState extends State<AddItem> {
 
   Widget _instructions() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -109,6 +109,7 @@ class _AddItemState extends State<AddItem> {
             text:
                 "Right-Click on a clothing item you like and it will show up here!",
             align: TextAlign.center,
+            size: 20,
           ),
           SizedBox(height: 128),
         ],

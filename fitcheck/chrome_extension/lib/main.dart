@@ -35,12 +35,7 @@ Widget _debugWrap(Widget child) {
                 height: 600,
                 width: 360,
                 decoration: BoxDecoration(
-                  // border: Border.all(color: black),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.black,
-                  // boxShadow: [
-                  //   BoxShadow(color: Colors.grey, spreadRadius: 3),
-                  // ],
+                  border: Border.all(color: black),
                 ),
                 child: child,
               ),

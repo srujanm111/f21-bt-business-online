@@ -42,12 +42,14 @@ class _LandingState extends State<Landing> {
   }
 
   void checkAuth(BuildContext context) async {
+    js.context['console'].callMethod('log', ['trace: checkAuth']);
     this
         .channel
         .postMessage(jsonEncode({"action": "request", "value": "token"}));
   }
 
   void checkAuthNext(BuildContext context) async {
+    js.context['console'].callMethod('log', ['trace: checkAuthNext']);
     if (api_token == 'null') {
       pushReplace(Startup(), context);
       return;
@@ -56,7 +58,6 @@ class _LandingState extends State<Landing> {
       'token': api_token,
     });
     // js.context.callMethod('alert', [response.statusCode]);
-    // js.context.callMethod('alert', [response.body]);
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
       print(body);
@@ -74,7 +75,11 @@ class _LandingState extends State<Landing> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset('assets/logo300.png'),
+        Image.asset(
+          'assets/logo100faded.png',
+          color: const Color.fromRGBO(255, 255, 255, 0.5),
+          colorBlendMode: BlendMode.modulate,
+        ),
       ],
     );
   }

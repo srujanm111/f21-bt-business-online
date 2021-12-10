@@ -19,7 +19,7 @@ class Wardrobe extends React.Component {
         this.state = {
             items: [],
             name: 'N/A',
-            price: '0.00',
+            price: 0,
             image_url: '',
             product_url: '',
             item_id: '',
@@ -130,10 +130,22 @@ class Wardrobe extends React.Component {
                     })}
                 </div>
                 <div style={{ boxSizing: 'border-box', paddingLeft: '20px', width: '50%', maxWidth: '700px', height: '700px', float: 'left', fontSize: '20px', textAlign: 'left', position: 'relative' }}>
+
+                    <div className="block_wrap" style={{ position: 'absolute', bottom: '130px', left: '20px', width: '120px', height: '50px', backgroundColor: 'white', borderTop: '2px solid #f4f4f4', borderRight: '2px solid #f4f4f4', borderLeft: 'none', borderBottom: 'none', borderRadius: '0 7px 0 0' }}>
+                        <div className="block_content">
+                            <span style={{ opacity: (this.state.item_id == '' ? '0.85' : '0.96') }}>
+                                <b>${this.state.price.toFixed(2)}</b>
+                            </span>
+                        </div>
+                    </div>
+
                     <div style={{ width: '100%', height: '570px', border: '2px solid #f4f4f4', borderRadius: '10px', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundImage: `url(${this.state.image_url})`, transition: 'background-image 0.2s' }}></div>
-                    <br />
-                    <b>Item Name: </b><span id='name_output'>{this.state.name}</span><br />
-                    <b>Item Price: </b><span id='price_output'>${this.state.price}</span><br />
+
+                    <div style={{ opacity: (this.state.item_id == '' ? '0.65' : '1'), height: '120px' }} className="block_wrap">
+                        <div style={{ textAlign: 'left' }} className="block_content">
+                            &nbsp;<b><span style={{ fontSize: (this.state.name.length > 30 ? '18px' : '21px') }}>{this.state.name}</span></b>
+                        </div>
+                    </div>
                     <div className="micon" style={{ position: 'absolute', right: '200px', bottom: '52px', opacity: (this.state.item_id == '' ? '0.58' : '0.84'), pointerEvents: (this.state.item_id == '' ? 'none' : 'auto'), transition: 'opacity 0.2s ease' }}>
                         <DeleteIcon onClick={_ => { this.deleteCurrentItem(); }} fontSize='large'></DeleteIcon>
                     </div>

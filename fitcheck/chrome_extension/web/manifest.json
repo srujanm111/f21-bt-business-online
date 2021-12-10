@@ -1,14 +1,14 @@
 {
     "name": "FitCheck",
-    "description": "Chrome extension for FitCheck.",
+    "description": "FitCheck Chrome Extension.",
     "version": "1.0.0",
-    "content_security_policy": {
-        "extension_pages": "script-src 'self' ; object-src 'self'"
-    },
+    "content_security_policy": "script-src 'self' ; object-src 'self'",
     "background": {
-        "service_worker": "background.js"
+        "scripts": ["background.js"],
+        "persistent": true
     },
-    "action": {
+    "browser_action": {
+        "default_title": "FitCheck",
         "default_popup": "index.html",
         "default_icon": "/icons/Icon-192.png"
     },
@@ -18,5 +18,5 @@
         "48": "/icons/shirt/icon-small.png",
         "128": "/icons/shirt/icon-large.png"
     },
-    "manifest_version": 3
+    "manifest_version": 2
 }

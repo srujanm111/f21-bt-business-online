@@ -8,7 +8,16 @@ const broadcast = {
     auth: new BroadcastChannel('auth'),
 };
 
+self.addEventListener('install', function (event) {
+    event.waitUntil(self.skipWaiting()); // Activate worker immediately
+});
+
+self.addEventListener('activate', function (event) {
+    event.waitUntil(self.clients.claim()); // Become available to all pages
+});
+
 chrome.runtime.onInstalled.addListener(() => {
+    console.log('service worker installed');
     chrome.contextMenus.create({
         id: context_menu_id,
         title: 'Add Clothing Item to FitCheck',
@@ -24,6 +33,7 @@ chrome.runtime.onMessage.addListener(data => {
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (context_menu_id === info.menuItemId) {
+        console.log(info, tab);
         var set_obj = {};
         set_obj[img_last_storage_id] = info.srcUrl;
         set_obj[page_last_storage_id] = info.pageUrl;
@@ -48,7 +58,7 @@ broadcast.img.onmessage = (e) => {
     // console.log(data, data.action == "request", data.value == "latest");
     if (data.action == "request" && data.value == "latest") {
         chrome.storage.sync.get([img_last_storage_id, page_last_storage_id], (result) => {
-            console.log(result);
+            // console.log(result);
             var img_last_url = "";
             var page_last_url = "";
             if (result.hasOwnProperty(img_last_storage_id) && result.hasOwnProperty(page_last_storage_id)) {
