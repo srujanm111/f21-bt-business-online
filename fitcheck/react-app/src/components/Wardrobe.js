@@ -90,13 +90,18 @@ class Wardrobe extends React.Component {
         }
     }
 
+    itemSort(a, b) {
+        return b.ts_updated - a.ts_updated;
+    }
+
     setupPage() {
         axios.post(`${global.config.api_url}/get_clothing`, {
             token: `${global.api.get_token()}`,
         }).then(response => {
             if (response && response.data && response.data.hasOwnProperty('list')) {
-                console.log(response.data.list);
-                this.setState({ items: response.data.list });
+                // console.log('list', response.data.list);
+                // console.log('sorted', response.data.list.sort(this.itemSort));
+                this.setState({ items: response.data.list.sort(this.itemSort) });
             } else {
                 console.error(response);
             }

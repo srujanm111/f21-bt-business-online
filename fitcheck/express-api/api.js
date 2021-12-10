@@ -77,7 +77,8 @@ function db_user_exists(username, resolve) {
 function db_create_user(username, new_password, resolve) {
     mongo_api.collection('user').insertOne({
         username: username,
-        password: new_password
+        password: new_password,
+        ts_created: Date.now()
     }, (e, result1) => {
         if (e) {
             console.err("[db]", `error creating user with username ${username}`, e.message ? e.message : e);
@@ -87,12 +88,15 @@ function db_create_user(username, new_password, resolve) {
 }
 // create new outfit
 function db_create_outfit(user_id, name, price_total, item_list, resolve) {
+    const timestamp = Date.now();
     mongo_api.collection('outfit').insertOne({
         name: name,
         price_total: price_total,
         user: user_id,
         clothes: item_list,
-        starred: false
+        starred: false,
+        ts_created: timestamp,
+        ts_updated: timestamp
     }, (e, result1) => {
         if (e) {
             console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
@@ -110,6 +114,7 @@ function db_update_outfit(outfit_id, user_id, name, price_total, item_list, reso
             name: name,
             price_total: price_total,
             clothes: item_list,
+            ts_updated: Date.now()
         }
     }, (e, result1) => {
         if (e) {
@@ -145,7 +150,12 @@ function db_get_outfit(user_id, outfit_id, resolve) {
 function db_star_outfit(id, starred, resolve) {
     mongo_api.collection('outfit').updateOne({
         _id: mongodb.ObjectId(id)
-    }, { $set: { starred: starred } }, (e, result1) => {
+    }, {
+        $set: {
+            starred: starred,
+            ts_updated: Date.now()
+        }
+    }, (e, result1) => {
         if (e) {
             console.err("[db]", `error starring outfit ${id} as ${starred}`, e.message ? e.message : e);
             resolve(false, e);
@@ -165,13 +175,16 @@ function db_delete_outfit(id, resolve) {
 }
 // create new clothing item
 function db_create_clothing_item(user_id, name, price, product_url, image_path, store_name, resolve) {
+    var timestamp = Date.now();
     mongo_api.collection('clothing').insertOne({
         name: name,
         price: price,
         product_url: product_url,
         image_path: image_path,
         store_name: store_name,
-        user: user_id
+        user: user_id,
+        ts_created: timestamp,
+        ts_updated: timestamp
     }, (e, result1) => {
         if (e) {
             console.err("[db]", `error creating outfit with name ${name}`, e.message ? e.message : e);
@@ -404,7 +417,9 @@ function web_routing() {
                         name: outfit_list[o_l].name,
                         price_total: outfit_list[o_l].price_total,
                         starred: outfit_list[o_l].starred,
-                        id: outfit_list[o_l]._id.toString()
+                        id: outfit_list[o_l]._id.toString(),
+                        ts_updated: outfit_list[o_l].ts_updated,
+                        ts_created: outfit_list[o_l].ts_created,
                     };
                     if (req.body.hasOwnProperty('include_clothes') && req.body.include_clothes == true) {
                         outfit_summary['clothes'] = outfit_list[o_l].clothes;
@@ -430,7 +445,9 @@ function web_routing() {
                         name: outfit.name,
                         price_total: outfit.price_total,
                         clothes: outfit.clothes,
-                        starred: outfit.starred
+                        starred: outfit.starred,
+                        ts_updated: outfit.ts_updated,
+                        ts_created: outfit.ts_created,
                     }
                 });
             });
@@ -501,7 +518,9 @@ function web_routing() {
                         image_path: item_list[i_l].image_path,
                         store_name: item_list[i_l].store_name,
                         user: item_list[i_l].user,
-                        id: item_list[i_l]._id.toString()
+                        id: item_list[i_l]._id.toString(),
+                        ts_created: item_list[i_l].ts_created,
+                        ts_updated: item_list[i_l].ts_updated,
                     });
                 }
                 return web_return_data(req, res, { list: result_list });
@@ -510,6 +529,7 @@ function web_routing() {
     });
     // delete clothing item
     express_api.post("/api/delete_clothing", web_require_token(), (req, res) => {
+        // TODO: reject the deletion if the clothing item exists in any outfits (or update those outfits by removing the item from their list: could be time-intensive)
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");

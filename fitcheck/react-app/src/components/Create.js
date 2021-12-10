@@ -49,7 +49,7 @@ class Create extends React.Component {
         }).then(response => {
             if (response && response.data && response.data.hasOwnProperty('list')) {
                 console.log(response.data.list);
-                this.setState({ items: response.data.list });
+                this.setState({ items: response.data.list.sort(this.itemSort) });
                 if (newEditingOutfitId) {
                     axios.post(`${global.config.api_url}/get_outfit`, {
                         outfit_id: `${newEditingOutfitId}`,
@@ -98,6 +98,10 @@ class Create extends React.Component {
                 return this.state.items[i];
         }
         return null;
+    }
+
+    itemSort(a, b) {
+        return b.ts_updated - a.ts_updated;
     }
 
     selectItem(i) {

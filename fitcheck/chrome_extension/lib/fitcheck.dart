@@ -165,6 +165,8 @@ class _AddItemState extends State<AddItem> {
                       imageUrl = null;
                       pageUrl = null;
                     });
+                    this.channel.postMessage(
+                        jsonEncode({"action": "request", "value": "clear"}));
                     await Flushbar(
                       borderRadius: BorderRadius.circular(10),
                       margin: EdgeInsets.all(14),

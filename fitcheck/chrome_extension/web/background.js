@@ -37,8 +37,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         var set_obj = {};
         set_obj[img_last_storage_id] = info.srcUrl;
         set_obj[page_last_storage_id] = info.pageUrl;
+        notify(info.srcUrl);
         chrome.storage.sync.set(set_obj, () => {
-            notify(info.srcUrl);
             broadcast.img.postMessage({
                 imageUrl: info.srcUrl,
                 pageUrl: info.pageUrl,
@@ -61,7 +61,7 @@ broadcast.img.onmessage = (e) => {
             // console.log(result);
             var img_last_url = "";
             var page_last_url = "";
-            if (result.hasOwnProperty(img_last_storage_id) && result.hasOwnProperty(page_last_storage_id)) {
+            if (result.hasOwnProperty(img_last_storage_id) && result.hasOwnProperty(page_last_storage_id) && result[img_last_storage_id] != "___" && result[page_last_storage_id] != "___") {
                 img_last_url = result[img_last_storage_id];
                 page_last_url = result[page_last_storage_id];
             } else return;
@@ -69,6 +69,13 @@ broadcast.img.onmessage = (e) => {
                 imageUrl: img_last_url,
                 pageUrl: page_last_url,
             });
+        });
+    } else if (data.action == "request" && data.value == "clear") {
+        var set_obj = {};
+        set_obj[img_last_storage_id] = "___";
+        set_obj[page_last_storage_id] = "___";
+        chrome.storage.sync.set(set_obj, () => {
+            console.log("cleared stored img/page");
         });
     }
 };
