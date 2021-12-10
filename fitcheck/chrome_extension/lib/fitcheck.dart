@@ -142,10 +142,14 @@ class _AddItemState extends State<AddItem> {
           CustomTextField(
             hint: "Name",
             controller: nameController,
-            borderLighterToggle: true,
+            borderLighterToggle: false,
           ),
           SizedBox(height: 10),
-          CustomTextField(hint: "Price", controller: priceController),
+          CustomTextField(
+            hint: "Price",
+            controller: priceController,
+            borderLighterToggle: true,
+          ),
           Spacer(),
           RoundButton(
               text: "Add to Wardrobe",
@@ -280,48 +284,51 @@ class _WardrobeState extends State<Wardrobe> {
         itemCount: localItems.length,
         itemBuilder: (BuildContext context, int index) {
           final item = localItems[index];
-          return GestureDetector(
-            onTap: () => js.context.callMethod('open', [item.pageUrl]),
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 7,
-                    color: green,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                        child: Image.network(item.imageUrl),
-                        fit: BoxFit.fill,
-                      ),
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => js.context.callMethod('open', [item.pageUrl]),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 7,
+                      color: green,
                     ),
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 5, right: 6),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: pink,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 7, right: 6, bottom: 5, top: 4),
-                              child: CustomText(
-                                text: "\$" + item.price.toStringAsFixed(2),
-                                color: white,
-                                size: 15,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: FittedBox(
+                          child: Image.network(item.imageUrl),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5, right: 6),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: pink,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 7, right: 6, bottom: 5, top: 4),
+                                child: CustomText(
+                                  text: "\$" + item.price.toStringAsFixed(2),
+                                  color: white,
+                                  size: 15,
+                                ),
                               ),
                             ),
-                          ),
-                        )),
-                  ],
+                          )),
+                    ],
+                  ),
                 ),
               ),
             ),

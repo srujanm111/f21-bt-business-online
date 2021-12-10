@@ -35,45 +35,46 @@ class _CustomTabBarState extends State<CustomTabBar> {
   Widget tab(TabItem item) {
     return Flexible(
       child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            setState(() {
-              index = widget.tabs.indexOf(item);
-              item.onPress();
-            });
-          },
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            // onEnter: (PointerDetails details) =>
-            //     setState(() => amIHovering = true),
-            // onExit: (PointerDetails details) => setState(() {
-            //   amIHovering = false;
-            //   exitFrom = details
-            //       .localPosition; // You can use details.position if you are interested in the global position of your pointer.
-            // }),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(width: 0.85, color: white),
-                  left: BorderSide(
-                      width: 0.5,
-                      color: (widget.tabs.indexOf(item) == 1 ? border : white)),
-                  right: BorderSide(
-                      width: 0.5,
-                      color: (widget.tabs.indexOf(item) == 1 ? white : border)),
-                  bottom: BorderSide(width: 1.25, color: border),
-                ),
-              ),
-              child: Center(
-                child: CustomText(
-                  text: item.name,
-                  color: index == widget.tabs.indexOf(item) ? pink : gray,
-                  weight: "800",
-                  size: 21,
-                ),
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          setState(() {
+            index = widget.tabs.indexOf(item);
+            item.onPress();
+          });
+        },
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          // onEnter: (PointerDetails details) =>
+          //     setState(() => amIHovering = true),
+          // onExit: (PointerDetails details) => setState(() {
+          //   amIHovering = false;
+          //   exitFrom = details
+          //       .localPosition; // You can use details.position if you are interested in the global position of your pointer.
+          // }),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(width: 0.85, color: white),
+                left: BorderSide(
+                    width: 0.5,
+                    color: (widget.tabs.indexOf(item) == 1 ? border : white)),
+                right: BorderSide(
+                    width: 0.5,
+                    color: (widget.tabs.indexOf(item) == 1 ? white : border)),
+                bottom: BorderSide(width: 1.25, color: border),
               ),
             ),
-          )),
+            child: Center(
+              child: CustomText(
+                text: item.name,
+                color: index == widget.tabs.indexOf(item) ? pink : gray,
+                weight: "800",
+                size: 21,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

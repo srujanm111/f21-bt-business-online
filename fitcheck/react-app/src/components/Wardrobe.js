@@ -125,7 +125,7 @@ class Wardrobe extends React.Component {
                     {Object.keys(this.state.items).map((i) => {
                         // console.log(this.state.items[i]);
                         var item = this.state.items[i];
-                        return (<div key={i.toString()} onClick={_ => { this.selectItem(i); }} style={{ height: '100px', width: '100px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '5px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: (this.state.item_i == i ? '3.7px solid #ffb8cc' : '1px solid #fbfbfb'), boxSizing: 'border-box' }}>
+                        return (<div key={i.toString()} onClick={_ => { this.selectItem(i); }} style={{ height: '100px', width: '100px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '5px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: (this.state.item_i == i ? '4px solid rgba(215, 245, 158, 0.95)' /* #E4FFB1 #ffb8cc */ : '1px solid #fbfbfb'), boxSizing: 'border-box' }}>
                         </div>);
                     })}
                 </div>
@@ -134,23 +134,29 @@ class Wardrobe extends React.Component {
                     <div className="block_wrap" style={{ position: 'absolute', bottom: '130px', left: '20px', width: '120px', height: '50px', backgroundColor: 'white', borderTop: '2px solid #f4f4f4', borderRight: '2px solid #f4f4f4', borderLeft: 'none', borderBottom: 'none', borderRadius: '0 7px 0 0' }}>
                         <div className="block_content">
                             <span style={{ opacity: (this.state.item_id == '' ? '0.85' : '0.96') }}>
-                                <b>${this.state.price.toFixed(2)}</b>
+                                <b>${this.state.price.toFixed ? this.state.price.toFixed(2) : "0.00"}</b>
                             </span>
                         </div>
                     </div>
 
-                    <div style={{ width: '100%', height: '570px', border: '2px solid #f4f4f4', borderRadius: '10px', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundImage: `url(${this.state.image_url})`, transition: 'background-image 0.2s' }}></div>
+                    <div style={{ width: '100%', height: '570px', border: '2px solid #f4f4f4', borderRadius: '10px', }}>
+                        <div className="block_wrap" style={{ width: '100%', height: '100%%', margin: '0 auto' }}>
+                            <div className="block_content">
+                                <div style={{ margin: '0 auto', height: '90%', width: '90%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundImage: `url(${this.state.image_url})`, transition: 'background-image 0.35s' }}></div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div style={{ opacity: (this.state.item_id == '' ? '0.65' : '1'), height: '120px' }} className="block_wrap">
                         <div style={{ textAlign: 'left' }} className="block_content">
                             &nbsp;<b><span style={{ fontSize: (this.state.name.length > 30 ? '18px' : '21px') }}>{this.state.name}</span></b>
                         </div>
                     </div>
-                    <div className="micon" style={{ position: 'absolute', right: '200px', bottom: '52px', opacity: (this.state.item_id == '' ? '0.58' : '0.84'), pointerEvents: (this.state.item_id == '' ? 'none' : 'auto'), transition: 'opacity 0.2s ease' }}>
-                        <DeleteIcon onClick={_ => { this.deleteCurrentItem(); }} fontSize='large'></DeleteIcon>
+                    <div className="micon" style={{ position: 'absolute', right: '200px', bottom: '52px', pointerEvents: (this.state.item_id == '' ? 'none' : 'auto'), transition: 'opacity 0.2s ease' }}>
+                        <DeleteIcon style={{ opacity: (this.state.item_id == '' ? '0.58' : '0.84') }} onClick={_ => { this.deleteCurrentItem(); }} fontSize='large'></DeleteIcon>
                     </div>
                     <div style={{ position: 'absolute', right: '5px', bottom: '35px', width: '170px', height: '70px' }}>
-                        <button className="productPageButton" style={{ opacity: (this.state.item_id == '' ? '0.6' : '1'), pointerEvents: (this.state.item_id == '' ? 'none' : 'auto'), transition: 'opacity 0.2s ease' }} onClick={_ => { this.openProductPage(); }}>
+                        <button className={"productPageButton" + ' ' + (this.state.item_id == '' ? 'productPageButtonState1' : 'productPageButtonState2')} style={{ opacity: (this.state.item_id == '' ? '0.6' : '1'), pointerEvents: (this.state.item_id == '' ? 'none' : 'auto') }} onClick={_ => { this.openProductPage(); }}>
                             <b>product page</b>
                         </button>
                     </div>
