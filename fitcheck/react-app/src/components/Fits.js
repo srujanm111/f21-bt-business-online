@@ -176,7 +176,13 @@ class Fits extends React.Component {
     }
 
     outfitSort(a, b) {
-        return b.ts_updated - a.ts_updated;
+        if (a.starred === b.starred) {
+            return b.ts_updated - a.ts_updated;
+        } else {
+            if (a.starred)
+                return -1;
+            else return 1;
+        }
     }
 
     deleteOutfit(id, name) {
