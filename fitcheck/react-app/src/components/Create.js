@@ -267,13 +267,13 @@ class Create extends React.Component {
                     <div className="block_wrap" style={{ position: 'absolute', left: '0', bottom: '5px', width: '100%', height: '95px', paddingRight: '24px', boxSizing: 'border-box' }}>
                         <div className="block_content" style={{ margin: '0 auto', width: '350px', marginRight: '15px' }}>
                             <div style={{ width: '170px', height: '70px', display: 'inline-block', marginRight: '8px' }}>
-                                <button className="saveOutfitButton" onClick={_ => { this.saveOutfit(); }}>
-                                    <b>{this.state.editingOutfitId == null ? "save" : "update"} fit</b>
+                                <button className="clearAllButton" onClick={_ => { this.clearAll(); }}>
+                                    <b>clear fit</b>
                                 </button>
                             </div>
                             <div style={{ width: '170px', height: '70px', display: 'inline-block', marginLeft: '8px' }}>
-                                <button className="clearAllButton" onClick={_ => { this.clearAll(); }}>
-                                    <b>clear fit</b>
+                                <button className="saveOutfitButton" onClick={_ => { this.saveOutfit(); }}>
+                                    <b>{this.state.editingOutfitId == null ? "save" : "update"} fit</b>
                                 </button>
                             </div>
                         </div>
