@@ -89,3 +89,30 @@ button.newOutfitButton:hover {
     left: 357px;
     top: 720px;
 }
+
+.closeButton {
+    transition: opacity 0.2s ease;
+}
+
+.closeButtonState1 {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+.closeButtonState2 {
+    opacity: 0.55;
+    pointer-events: auto;
+    z-index: 30;
+}
+.closeButtonState2:hover {
+    opacity: 0.8;
+}
+
+.editFitNameIcon {
+    opacity: 0.65;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+.editFitNameIcon:hover {
+    opacity: 0.85;
+}

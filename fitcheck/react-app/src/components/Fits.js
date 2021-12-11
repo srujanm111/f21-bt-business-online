@@ -214,6 +214,13 @@ class Fits extends React.Component {
         }
     }
 
+    shortenText(name) {
+        var text_lim = ("lorem ipsum d").length;
+        if (name.length > text_lim)
+            name = name.substring(0, text_lim - 1).trim() + '...';
+        return name;
+    }
+
     render() {
         return (
 
@@ -245,7 +252,7 @@ class Fits extends React.Component {
                             </div>
                             <div className="block_wrap" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '50px', borderBottom: '1px solid #e4e4e4' }}>
                                 <div onClick={_ => { this.toggleStarOutfit(outfit.id, outfit.starred); }} style={{ position: 'absolute', cursor: 'pointer', top: '16px', left: '20px', width: '20px', height: '20px', backgroundImage: `url(/${(!outfit.starred ? 'heart_clear' : 'heart')}.png)`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', opacity: '0.9', cursor: 'pointer' }}></div>
-                                <div className="block_content" style={{ textAlign: 'left', boxSixing: 'border-box', paddingLeft: '58px' }}><b style={{ fontSize: '17.5px', color: 'black' }}>{outfit.name}</b></div>
+                                <div className="block_content" style={{ textAlign: 'left', boxSixing: 'border-box', paddingLeft: '58px' }}><b style={{ fontSize: '17.5px', color: 'black' }}>{this.shortenText(outfit.name)}</b></div>
                                 <div style={{ position: 'absolute', top: '9px', right: '77px', width: '25px', height: '25px', color: '#111' }}>
                                     <b style={{ fontSize: '19px' }}>${outfit.price_total.toFixed(2)}</b>
                                 </div>
@@ -261,7 +268,7 @@ class Fits extends React.Component {
                                             <div className="outfitItemImage" style={{ backgroundImage: `url(${item.image_path})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', zIndex: '1' }}></div>
                                             <div className="outfitItemDetail" style={{ height: '100%', width: '100%', boxSizing: 'border-box', padding: '10px 20px', position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', zIndex: '2' }}>
                                                 <div style={{ position: 'absolute', top: '10px', left: '0', width: '100%', minHeight: '20px', height: 'auto', boxSizing: 'border-box', paddingLeft: '20px' }}>
-                                                    <span style={{ fontWeight: '800', fontSize: '20px' }}>{item.name}</span>
+                                                    <span style={{ fontWeight: '800', fontSize: (item.name.length > 25 && outfit.clothes.length ? '17px' : '20px'), paddingRight: '10px' }}>{item.name}</span>
                                                 </div>
                                                 <div style={{ position: 'absolute', bottom: '10px', left: '0', width: '100%', minHeight: '20px', height: 'auto', boxSizing: 'border-box', paddingLeft: '20px' }}>
                                                     <span style={{ fontWeight: '800', fontSize: '25px' }}>${item.price.toFixed(2)}</span><br />
@@ -276,10 +283,11 @@ class Fits extends React.Component {
                             </div>
                         </div>
                     );
-                })}
+                })
+                }
                 <div className="block_wrap newOutfitButton" style={{ height: '700px', width: '290px', marginTop: '30px', marginLeft: '50px', borderRadius: '12px', position: 'relative', border: '2px solid #ebebeb', borderStyle: 'dashed', boxSizing: 'border-box', display: 'inline-table', cursor: 'pointer' }}>
                     <div className="block_content">
-                        <div style={{ height: '65px', width: '65px', backgroundImage: `url(/plus.png)`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '0 auto', opacity: '0.15' }}></div>
+                        <div style={{ height: '65px', width: '65px', backgroundImage: `url(/plus.png)`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '0 auto', opacity: '0.125' }}></div>
                         <NavLink to="/create" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', margin: '0' }}></NavLink>
                     </div>
                 </div>

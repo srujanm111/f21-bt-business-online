@@ -49,12 +49,13 @@ div.outfitItemDetail {
     box-sizing: border-box;
     border: none;
     border-bottom: 0.5px solid rgba(255, 255, 255, 0);
-    border-top: 0.5px solid rgba(255, 255, 255, 0);
+    /* border-top: 0.5px solid rgba(255, 255, 255, 0); */
+    border-top: none;
 }
 div.outfitItemDetail:hover {
     background-color: rgba(255, 255, 255, 0.65);
     opacity: 1;
-    border-color: #f6f6f6;
+    /* border-color: #f3f3f3; */
 }
 div.outfitBuyButton {
     background-color: #fe9eb9;

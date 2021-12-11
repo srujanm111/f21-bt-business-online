@@ -136,6 +136,15 @@ class Wardrobe extends React.Component {
                 </div>
                 <div style={{ boxSizing: 'border-box', paddingLeft: '20px', width: '50%', maxWidth: '700px', height: '700px', float: 'left', fontSize: '20px', textAlign: 'left', position: 'relative' }}>
 
+
+                    <div className="block_wrap" style={{ position: 'absolute', top: '0', left: '20px', width: 'auto', height: '50px', backgroundColor: 'white', borderBottom: '2px solid #f4f4f4', borderRight: '2px solid #f4f4f4', borderTop: 'none', borderLeft: 'none', borderRadius: '0 0 7px 0', display: (this.state.item_i == -1 ? 'none' : 'table') }}>
+                        <div className="block_content">
+                            <span style={{ opacity: '0.96', padding: `0 20px 0 20px`, }}>
+                                <b style={{ fontSize: (this.state.name.length > 25 ? '18px' : '21px') }}>{this.state.name}</b>
+                            </span>
+                        </div>
+                    </div>
+
                     <div className="block_wrap" style={{ position: 'absolute', bottom: '130px', left: '20px', width: '120px', height: '50px', backgroundColor: 'white', borderTop: '2px solid #f4f4f4', borderRight: '2px solid #f4f4f4', borderLeft: 'none', borderBottom: 'none', borderRadius: '0 7px 0 0' }}>
                         <div className="block_content">
                             <span style={{ opacity: (this.state.item_id == '' ? '0.85' : '0.96') }}>
@@ -147,14 +156,14 @@ class Wardrobe extends React.Component {
                     <div style={{ width: '100%', height: '570px', border: '2px solid #f4f4f4', borderRadius: '10px', }}>
                         <div className="block_wrap" style={{ width: '100%', height: '100%%', margin: '0 auto' }}>
                             <div className="block_content">
-                                <div style={{ margin: '0 auto', height: '90%', width: '90%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundImage: `url(${this.state.image_url})`, transition: 'background-image 0.35s' }}></div>
+                                <div style={{ margin: '0 auto', height: '80%', width: '90%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundImage: `url(${this.state.image_url})`, transition: 'background-image 0.35s' }}></div>
                             </div>
                         </div>
                     </div>
 
-                    <div style={{ opacity: (this.state.item_id == '' ? '0.65' : '1'), height: '120px' }} className="block_wrap">
+                    <div style={{ opacity: (this.state.item_id == '' ? '0.8' : '0'), height: '120px' }} className="block_wrap">
                         <div style={{ textAlign: 'left' }} className="block_content">
-                            &nbsp;<b><span style={{ fontSize: (this.state.name.length > 30 ? '18px' : '21px') }}>{this.state.name}</span></b>
+                            <b><span>&nbsp;Great finds!</span></b>
                         </div>
                     </div>
                     <div className="micon" style={{ position: 'absolute', right: '200px', bottom: '52px', pointerEvents: (this.state.item_id == '' ? 'none' : 'auto'), transition: 'opacity 0.2s ease' }}>
