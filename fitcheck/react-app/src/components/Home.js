@@ -60,7 +60,11 @@ class Home extends React.Component {
     }
 
     getInspired() {
-        console.log('get inspired fit');
+        console.log('get inspired');
+    }
+
+    openOutfit(outfit_num) {
+        console.log(`open outfit ${outfit_num}`);
     }
 
     render() {
@@ -92,16 +96,16 @@ class Home extends React.Component {
                 </div>
                 <div className="homepage_preview_wrapper">
                     <div className="homepage_preview">
-                        <button className="homepage_preview_content" onClick={_ => { this.createNewFitButton(); }}></button>
+                        <button className="homepage_preview_content" onClick={_ => { this.openOutfit(1); }}></button>
                     </div>
                     <div className="homepage_preview">
-                        <button className="homepage_preview_content" onClick={_ => { this.mostRecentFitButton(); }}></button>
+                        <button className="homepage_preview_content" onClick={_ => { this.openOutfit(2); }}></button>
                     </div>
                     <div className="homepage_preview">
-                        <button className="homepage_preview_content" onClick={_ => { this.getInspired(); }}></button>
+                        <button className="homepage_preview_content" onClick={_ => { this.openOutfit(3); }}></button>
                     </div>
                     <div className="homepage_preview">
-                        <button className="homepage_preview_content" onClick={_ => { this.getInspired(); }}></button>
+                        <button className="homepage_preview_content" onClick={_ => { this.openOutfit(4); }}></button>
                     </div>
                 </div>
             </div>
