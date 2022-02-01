@@ -1,0 +1,88 @@
+div.homepage_box_wrapper {
+    margin-top: 40px;
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.homepage_box {
+    width: 33.333%;
+    height: 240px;
+    margin: 0;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+div.homepage_box button.homepage_box_content {
+    width: 90%;
+    height: 240px;
+    background-color: #d7d7d7;
+    border-radius: 20px;
+    margin: 0 auto;
+    text-align: right;
+    box-sizing: border-box;
+    /* padding: 34px 40px 0; */
+    padding: 0px 40px;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+    border: none;
+    outline: none;
+    display: block;
+}
+
+div.homepage_box button.homepage_box_content:hover {
+    opacity: 0.86;
+}
+
+div.homepage_box button.homepage_box_content h1 {
+    /* font-weight: 600; */
+    line-height: 57px;
+    /* font-size: 44px; */
+}
+
+h1.homepage_inspiration_message {
+    letter-spacing: 1.3px;
+    font-weight: 600;
+}
+
+div.homepage_preview_wrapper {
+    margin-top: 40px;
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.homepage_preview {
+    width: 25%;
+    height: 240px;
+    margin: 0;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+div.homepage_preview button.homepage_preview_content {
+    width: 90%;
+    height: 240px;
+    background-color: #d7d7d7;
+    border-radius: 20px;
+    margin: 0 auto;
+    text-align: right;
+    box-sizing: border-box;
+    /* padding: 34px 40px 0; */
+    padding: 0px 40px;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+    border: none;
+    outline: none;
+    display: block;
+}

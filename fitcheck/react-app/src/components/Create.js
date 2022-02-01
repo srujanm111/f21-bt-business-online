@@ -287,7 +287,7 @@ class Create extends React.Component {
                         {Object.keys(this.state.outfitItems).map((j) => {
                             // console.log(this.state.items[i]);
                             var item = this.state.outfitItems[j];
-                            return (<div ref={this.state.lastAddedItem == item.id ? this.lastAddedItemRef : null} key={j.toString()} onClick={_ => { this.selectOutfitItem(j); }} style={{ height: '220px', width: '220px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', margin: '10px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: '1px solid #fbfbfb' }}>
+                            return (<div ref={this.state.lastAddedItem == item.id ? this.lastAddedItemRef : null} key={j.toString()} onClick={_ => { this.selectOutfitItem(j); }} className="outfit_editor_outfit_item" style={{ height: '220px', width: '220px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', margin: '10px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: '1px solid #fbfbfb' }}>
                             </div>);
                         })}
                     </div>
@@ -313,12 +313,12 @@ class Create extends React.Component {
                         <div className="block_content" style={{ margin: '0 auto', width: '350px', marginRight: '15px' }}>
                             <div style={{ width: '170px', height: '70px', display: 'inline-block', marginRight: '8px' }}>
                                 <button className="clearAllButton" onClick={_ => { this.clearAll(); }}>
-                                    <b>clear fit</b>
+                                    <b>clear{window.innerWidth > 875 ? ' fit' : ''}</b>
                                 </button>
                             </div>
                             <div style={{ width: '170px', height: '70px', display: 'inline-block', marginLeft: '8px' }}>
                                 <button className="saveOutfitButton" onClick={_ => { this.saveOutfit(); }}>
-                                    <b>{this.state.editingOutfitId == null ? "save" : "update"} fit</b>
+                                    <b>{this.state.editingOutfitId == null ? "save" : "update"}{window.innerWidth > 875 ? ' fit' : ''}</b>
                                 </button>
                             </div>
                         </div>
@@ -328,7 +328,7 @@ class Create extends React.Component {
                     {Object.keys(this.state.items).map((i) => {
                         // console.log(this.state.items[i]);
                         var item = this.state.items[i];
-                        return (<div key={i.toString()} onClick={_ => { this.selectItem(i); }} style={{ height: '100px', width: '100px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '5px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: '1px solid #fbfbfb' }}>
+                        return (<div key={i.toString()} onClick={_ => { this.selectItem(i); }} className="outfit_editor_wardrobe_item" style={{ height: '100px', width: '100px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '5px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: '1px solid #fbfbfb' }}>
                         </div>);
                     })}
                 </div>

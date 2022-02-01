@@ -15,7 +15,7 @@ import { withRouter } from "react-router-dom";
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Landing.css';
+import '../styles/Home.css';
 
 import createBox from '../assets/createBox.svg';
 import recentBox from '../assets/recentBox.svg';
@@ -32,7 +32,10 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            inspiration_message_first: "Check out those fits!",
+            inspiration_message_second: "Take it home!"
+        };
     }
 
     componentDidMount() {
@@ -48,22 +51,58 @@ class Home extends React.Component {
         this.props.history.push(`/${page}`);
     }
 
+    createNewFitButton() {
+        console.log('create new fit');
+    }
+
+    mostRecentFitButton() {
+        console.log('most recent fit');
+    }
+
+    getInspired() {
+        console.log('get inspired fit');
+    }
+
     render() {
         return (
-            <div>
-                <div className="text">
-                    <h1>
-                        Check out those fits!
-                    </h1>
+            <div style={{ marginTop: '135px', textAlign: 'left' }}>
+                <div style={{ width: '90%', margin: '0 auto' }}>
+                    <h1 className="homepage_inspiration_message">{this.state.inspiration_message_first}</h1>
                 </div>
-                <div className="createBox">
-                    <img src={createBox} alt="" />
+                <div className="homepage_box_wrapper">
+                    <div className="homepage_box">
+                        <button className="homepage_box_content" onClick={_ => { this.createNewFitButton(); }}>
+                            <h1>Create<br />New<br />Fit</h1>
+                        </button>
+                    </div>
+                    <div className="homepage_box">
+                        <button className="homepage_box_content" onClick={_ => { this.mostRecentFitButton(); }}>
+                            <h1>Most<br />Recent<br />Fit</h1>
+                        </button>
+                    </div>
+                    <div className="homepage_box">
+                        <button className="homepage_box_content" onClick={_ => { this.getInspired(); }}>
+                            <h1>Get<br />Inspired</h1>
+                        </button>
+
+                    </div>
                 </div>
-                <div className="recentBox">
-                    <img src={recentBox} alt="" />
+                <div style={{ width: '90%', margin: '70px auto 0' }}>
+                    <h1 className="homepage_inspiration_message" style={{ letterSpacing: '1.5px' }}>{this.state.inspiration_message_second}</h1>
                 </div>
-                <div className="inspiredBox">
-                    <img src={inspiredBox} alt="" />
+                <div className="homepage_preview_wrapper">
+                    <div className="homepage_preview">
+                        <button className="homepage_preview_content" onClick={_ => { this.createNewFitButton(); }}></button>
+                    </div>
+                    <div className="homepage_preview">
+                        <button className="homepage_preview_content" onClick={_ => { this.mostRecentFitButton(); }}></button>
+                    </div>
+                    <div className="homepage_preview">
+                        <button className="homepage_preview_content" onClick={_ => { this.getInspired(); }}></button>
+                    </div>
+                    <div className="homepage_preview">
+                        <button className="homepage_preview_content" onClick={_ => { this.getInspired(); }}></button>
+                    </div>
                 </div>
             </div>
         );

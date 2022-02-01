@@ -130,7 +130,7 @@ class Wardrobe extends React.Component {
                     {Object.keys(this.state.items).map((i) => {
                         // console.log(this.state.items[i]);
                         var item = this.state.items[i];
-                        return (<div key={i.toString()} onClick={_ => { this.selectItem(i); }} style={{ height: '100px', width: '100px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '5px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: (this.state.item_i == i ? '4px solid rgba(215, 245, 158, 0.95)' /* #E4FFB1 #ffb8cc */ : '1px solid #fbfbfb'), boxSizing: 'border-box' }}>
+                        return (<div key={i.toString()} onClick={_ => { this.selectItem(i); }} className="wardrobe_clothing_item" style={{ height: '100px', width: '100px', backgroundImage: `url(${item.image_path})`, display: 'inline-block', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', margin: '5px 10px 0 0', borderRadius: '5px', cursor: 'pointer', border: (this.state.item_i == i ? '4px solid rgba(215, 245, 158, 0.95)' /* #E4FFB1 #ffb8cc */ : '1px solid #fbfbfb'), boxSizing: 'border-box' }}>
                         </div>);
                     })}
                 </div>

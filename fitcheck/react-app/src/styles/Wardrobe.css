@@ -57,3 +57,11 @@ button.productPageButtonState2:hover {
     left: 1179px;
     top: 698px;
 }
+
+div.wardrobe_clothing_item {
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
+div.wardrobe_clothing_item:hover {
+    opacity: 0.84;
+}

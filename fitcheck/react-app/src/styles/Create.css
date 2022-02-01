@@ -40,7 +40,7 @@ button.newOutfitButton:hover {
     background-color: #e3e3e3;
 }
 
-.clothe_border {
+.clothes_border {
     position: absolute;
     width: 713px;
     height: 722px;
@@ -115,4 +115,20 @@ button.newOutfitButton:hover {
 }
 .editFitNameIcon:hover {
     opacity: 0.85;
+}
+
+div.outfit_editor_outfit_item {
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
+div.outfit_editor_outfit_item:hover {
+    opacity: 0.84;
+}
+
+div.outfit_editor_wardrobe_item {
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
+div.outfit_editor_wardrobe_item:hover {
+    opacity: 0.84;
 }
