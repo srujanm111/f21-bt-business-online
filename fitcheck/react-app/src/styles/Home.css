@@ -86,3 +86,7 @@ div.homepage_preview button.homepage_preview_content {
     outline: none;
     display: block;
 }
+
+div.homepage_preview button.homepage_preview_content:hover {
+    opacity: 0.86;
+}
