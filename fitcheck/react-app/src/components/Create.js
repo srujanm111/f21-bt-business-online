@@ -1,3 +1,9 @@
+/* FITCHECK
+ * WEB FRONTEND
+ * CVGT F21-BT-BUSINESS-ONLINE
+ */
+
+// Create page view
 
 import '../common';
 import axios from 'axios';

@@ -573,6 +573,24 @@ function web_routing() {
             });
         });
     });
+    express_api.post("/api/get_img_previews", (req, res) => {
+        // authenticate token
+        req.user = web_verify_token(req.body.token);
+        if (req.user == null) return web_return_error(req, res, 401, "Unauthorized");
+        // verify authenticated user exists
+        db_user_exists(req.user.username, (user) => {
+            if (user === false) return web_return_error(req, res, 500, "Database error");
+            if (user === null) return web_return_error(req, res, 400, "User not found");
+            // return temporary image previews
+            return web_return_data(req, res, {
+                previews: [
+                    "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F41%2Fcf%2F41cf4e4ff845ed859b5e6a41b8f7c08f1c8e6239.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bladies_tops_croppedtops%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]",
+                    "https://m.media-amazon.com/images/I/71R0nWwBjaL._AC_UL640_FMwebp_QL65_.jpg",
+                    "https://assets.adidas.com/images/w_600,f_auto,q_auto/414a0af449a94f17b0eead8f00ebaea2_9366/NMD_R1_Shoes_Beige_GZ8025_01_standard.jpg"
+                ]
+            });
+        });
+    });
 }
 // close web server
 function web_exit(next) {

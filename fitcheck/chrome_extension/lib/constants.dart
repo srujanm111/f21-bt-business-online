@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const prod_mode = true;
+const prod_mode = false;
 const web_url = prod_mode ? "fitcheck.ml" : "localhost:3000";
 const api_url = prod_mode ? web_url : "localhost:8000";
 var api_token = "";

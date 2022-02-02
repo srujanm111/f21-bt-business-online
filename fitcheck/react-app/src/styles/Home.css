@@ -18,7 +18,7 @@ div.homepage_box {
 div.homepage_box button.homepage_box_content {
     width: 90%;
     height: 240px;
-    background-color: #d7d7d7;
+    background-color: #e7e7e7;
     border-radius: 20px;
     margin: 0 auto;
     text-align: right;
@@ -33,6 +33,15 @@ div.homepage_box button.homepage_box_content {
     border: none;
     outline: none;
     display: block;
+    position: relative;
+}
+
+div.homepage_box div.homepage_box_background {
+    opacity: 0.25;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 div.homepage_box button.homepage_box_content:hover {
@@ -42,7 +51,17 @@ div.homepage_box button.homepage_box_content:hover {
 div.homepage_box button.homepage_box_content h1 {
     /* font-weight: 600; */
     line-height: 57px;
+    position: relative;
+    z-index: 100;
     /* font-size: 44px; */
+}
+
+div.homepage_preview div.homepage_preview_background {
+    opacity: 0.8;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 h1.homepage_inspiration_message {
@@ -70,7 +89,7 @@ div.homepage_preview {
 div.homepage_preview button.homepage_preview_content {
     width: 90%;
     height: 240px;
-    background-color: #d7d7d7;
+    background-color: #e7e7e7;
     border-radius: 20px;
     margin: 0 auto;
     text-align: right;
@@ -85,6 +104,7 @@ div.homepage_preview button.homepage_preview_content {
     border: none;
     outline: none;
     display: block;
+    position: relative;
 }
 
 div.homepage_preview button.homepage_preview_content:hover {
