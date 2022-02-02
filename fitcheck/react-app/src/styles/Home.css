@@ -18,7 +18,7 @@ div.homepage_box {
 div.homepage_box button.homepage_box_content {
     width: 90%;
     height: 240px;
-    background-color: #e7e7e7;
+    background-color: #e2e2e2;
     border-radius: 20px;
     margin: 0 auto;
     text-align: right;
@@ -34,10 +34,11 @@ div.homepage_box button.homepage_box_content {
     outline: none;
     display: block;
     position: relative;
+    box-shadow: 0 3px 6px 2px rgba(0, 0, 0, 0.01);
 }
 
 div.homepage_box div.homepage_box_background {
-    opacity: 0.25;
+    opacity: 0.4;
     position: absolute;
     background-position: center;
     background-repeat: no-repeat;
@@ -57,7 +58,7 @@ div.homepage_box button.homepage_box_content h1 {
 }
 
 div.homepage_preview div.homepage_preview_background {
-    opacity: 0.8;
+    opacity: 0.9;
     position: absolute;
     background-position: center;
     background-repeat: no-repeat;
@@ -105,6 +106,7 @@ div.homepage_preview button.homepage_preview_content {
     outline: none;
     display: block;
     position: relative;
+    box-shadow: 0 3px 6px 2px rgba(0, 0, 0, 0.04);
 }
 
 div.homepage_preview button.homepage_preview_content:hover {
