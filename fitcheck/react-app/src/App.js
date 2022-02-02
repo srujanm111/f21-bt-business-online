@@ -26,6 +26,7 @@ import Navbar from "./components/Navbar";
 import Home from './components/Home';
 import Wardrobe from './components/Wardrobe';
 import Create from './components/Create';
+import Share from './components/Share';
 
 function App() {
     return (
@@ -48,13 +49,9 @@ function App() {
                         <Navbar active="home"></Navbar>
                         <Home></Home>
                     </Route>
-                    <Route path="/Wardrobe">
-                        <Navbar active="Wardrobe"></Navbar>
-                        <Wardrobe></Wardrobe>
-                    </Route>
-                    <Route path="/Create">
-                        <Navbar active="Create"></Navbar>
-                        <Create></Create>
+
+                    <Route path="/share">
+                        <Share></Share>
                     </Route>
 
                     <Route path="/login">

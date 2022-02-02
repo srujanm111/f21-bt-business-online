@@ -112,6 +112,26 @@ div.newOutfitButton:hover {
     opacity: 0.75;
 }
 
+.fitsShareButton {
+    transition: opacity 0.3s ease;
+}
+.fitsShareButtonState1 {
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.16);
+}
+.fitsShareButtonState1:hover {
+    opacity: 0;
+}
+.fitsShareButtonState2 {
+    opacity: 0.95;
+    pointer-events: auto;
+    box-shadow: 0 0 2px 1px rgba(10, 7, 7, 0.01);
+}
+.fitsShareButtonState2:hover {
+    opacity: 0.75;
+}
+
 .fitsDeleteButton {
     transition: opacity 0.3s ease;
 }

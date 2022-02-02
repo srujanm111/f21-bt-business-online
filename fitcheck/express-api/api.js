@@ -73,6 +73,21 @@ function db_user_exists(username, resolve) {
         }
     });
 }
+// get user by id
+function db_get_user_by_id(id, resolve) {
+    mongo_api.collection('user').findOne({
+        _id: mongodb.ObjectId(id)
+    }, (e, item1) => {
+        if (e) {
+            console.err("[db]", `error finding user ${id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else {
+            if (item1 == null)
+                resolve(null);
+            else resolve(item1);
+        }
+    });
+}
 // create new user
 function db_create_user(username, new_password, resolve) {
     mongo_api.collection('user').insertOne({
@@ -164,6 +179,16 @@ function db_get_outfit(user_id, outfit_id, resolve) {
         } else resolve(outfit);
     });
 }
+function db_get_outfit_by_id_only(outfit_id, resolve) {
+    mongo_api.collection('outfit').findOne({
+        _id: mongodb.ObjectId(outfit_id),
+    }, (e, outfit) => {
+        if (e) {
+            console.err("[db]", `error getting outfit ${outfit_id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(outfit);
+    });
+}
 // star outfit
 function db_star_outfit(id, starred, resolve) {
     mongo_api.collection('outfit').updateOne({
@@ -219,6 +244,17 @@ function db_get_clothing_items(user_id, resolve) {
             console.err("[db]", `error getting clothing items for user ${user_id}`, e.message ? e.message : e);
             resolve(false, e);
         } else resolve(items);
+    });
+}
+function db_get_clothing_items_by_id_only(ids, resolve) {
+    for (var i in ids) ids[i] = mongodb.ObjectId(ids[i]);
+    mongo_api.collection('clothing').find({
+        _id: { $in: ids }
+    }).toArray((e, items) => {
+        if (e) {
+            console.err("[db]", `error getting clothing items for user ${user_id}`, e.message ? e.message : e);
+            resolve(false, e);
+        } else resolve(true, items);
     });
 }
 // delete clothing item
@@ -481,6 +517,37 @@ function web_routing() {
                         ts_updated: outfit.ts_updated,
                         ts_created: outfit.ts_created,
                     }
+                });
+            });
+        });
+    });
+    // get single shared outfit
+    express_api.post("/api/get_shared_outfit", (req, res) => {
+        // retrieve single publicly shared outfit
+        db_get_outfit_by_id_only(req.body.outfit_id, (outfit) => {
+            if (outfit === false) return web_return_error(req, res, 500, "Database error");
+            if (outfit === null) return web_return_error(req, res, 404, "Outfit not found");
+            db_get_clothing_items_by_id_only(outfit.clothes, (success, clothes_detail) => {
+                if (success === false || success === null) return web_return_error(req, res, 500, "Database error");
+                for (var c in clothes_detail) {
+                    delete clothes_detail[c]['user'];
+                    clothes_detail[c]['id'] = clothes_detail[c]['_id'].toString();
+                }
+                db_get_user_by_id(outfit.user, (user) => {
+                    if (user === false || user === null) return web_return_error(req, res, 500, "Database error");
+                    return web_return_data(req, res, {
+                        outfit: {
+                            id: req.body.outfit_id,
+                            name: outfit.name,
+                            creator: user.username,
+                            price_total: outfit.price_total,
+                            clothes: outfit.clothes,
+                            clothes_detail: clothes_detail,
+                            starred: outfit.starred,
+                            ts_updated: outfit.ts_updated,
+                            ts_created: outfit.ts_created,
+                        }
+                    });
                 });
             });
         });
