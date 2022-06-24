@@ -13,8 +13,8 @@ const http = require("http");
 const express = require("express");
 const mongodb = require('mongodb');
 const readline = require("readline");
-const ejwt = require("express-jwt");
 const jwt = require("jsonwebtoken");
+const { expressjwt: ejwt} = require("express-jwt");
 const utils = require("./utils");
 const cors = require("cors");
 
@@ -23,7 +23,7 @@ const cors = require("cors");
 global.args = process.argv.slice(2);
 global.env = global.args[0] == "--production" ? "prod" : "dev";
 global.config = JSON.parse(fs.readFileSync('./config.json', { encoding: 'utf8', flag: 'r' }));
-global.http_port = global.env == "dev" ? 8000 : global.config.http_port;
+global.http_port = parseInt(process.env.hasOwnProperty('PORT') ? process.env.PORT : (global.env == "dev" ? 8000 : global.config.http_port));
 global.mongo_port = global.env == "dev" ? 27017 : global.config.mongo_port;
 
 // mongodb api
