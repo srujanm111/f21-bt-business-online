@@ -408,6 +408,7 @@ function web_routing() {
     });
     // authenticate token
     express_api.get("/api/auth", web_require_token() /* middleware decodes JWT */, (req, res) => {
+        req.user = req.auth;
         // verify decoded user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -432,6 +433,7 @@ function web_routing() {
     /* outfits */
     // create outfit
     express_api.post("/api/create_outfit", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -445,6 +447,7 @@ function web_routing() {
     });
     // update outfit
     express_api.post("/api/update_outfit", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -458,6 +461,7 @@ function web_routing() {
     });
     // update outfit
     express_api.post("/api/rename_outfit", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -472,6 +476,7 @@ function web_routing() {
     });
     // get outfit list
     express_api.post("/api/get_outfits", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -500,6 +505,7 @@ function web_routing() {
     });
     // get single outfit
     express_api.post("/api/get_outfit", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -554,6 +560,7 @@ function web_routing() {
     });
     // star outfit
     express_api.post("/api/star_outfit", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -567,6 +574,7 @@ function web_routing() {
     });
     // delete outfit
     express_api.post("/api/delete_outfit", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
             if (user === false) return web_return_error(req, res, 500, "Database error");
@@ -628,6 +636,7 @@ function web_routing() {
     });
     // delete clothing item
     express_api.post("/api/delete_clothing", web_require_token(), (req, res) => {
+        req.user = req.auth;
         // TODO: reject the deletion if the clothing item exists in any outfits (or update those outfits by removing the item from their list: could be time-intensive)
         // verify authenticated user exists
         db_user_exists(req.user.username, (user) => {
